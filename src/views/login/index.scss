@@ -1,4 +1,128 @@
-.login-container {
-  height: 100%;
-  background-color: #a15b5b;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+
+.login-page-bg {
+  min-height: 100%;
+  width: 100%;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  background-color: #5805ed;
+  color: white;
+  font-family: "Poppins", sans-serif;
+}
+
+.main-login-form {
+  background: #5805ed;
+  box-shadow: -10px -10px 20px rgba(255, 255, 255, 0.25), // 更轻微的阴影
+  10px 10px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 20px; // 更小的圆角
+  padding: 1.5em 2em; // 更小的内边距
+  width: 80%; // 控制宽度，使得登录框更小
+  max-width: 500px; // 最大宽度限制
+}
+
+.login-form-label {
+  text-align: center;
+  font-size: 1.5em; // 稍微减小字体大小
+}
+
+.login-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.username-input,
+.password-input {
+  background: #5805ed;
+  box-shadow: inset -3px -3px 6px rgba(255, 255, 255, 0.25),
+  inset 3px 3px 6px rgba(0, 0, 0, 0.25);
+  border-radius: 20px; // 更小的圆角
+  border: none;
+  outline: none;
+  padding: 0.5em 1em; // 调整内边距
+  font-size: 1.2em; // 稍微减小字体大小
+  font-weight: bold;
+  margin: 0.5em 0;
+  color: white;
+}
+
+.username-input::placeholder,
+.password-input::placeholder {
+  color: white;
+  font-weight: bold;
+}
+
+.username-input:focus,
+.password-input:focus {
+  border: 2px solid rgba(255, 255, 255, 0.327);
+}
+
+.login-button {
+  width: 100%;
+  margin: 0 auto;
+  font-weight: bold;
+  font-size: 1.2em; // 稍微减小字体大小
+  padding: 0.5em; // 调整内边距
+  background: #3c0793;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25),
+  -3px -3px 6px rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  color: white;
+  transition: all 0.5s;
+  cursor: pointer;
+  transform: perspective(1px) translateZ(0);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    clip-path: inset(0 100% 0 0);
+    background: white;
+    opacity: 1;
+    transition: 0.4s;
+    border-radius: 10px;
+  }
+
+  &:hover::before {
+    clip-path: inset(0 0 0 0);
+  }
+
+  &:hover {
+    color: #3c0793;
+  }
+}
+
+.divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  margin: 1em 0;
+}
+
+.line {
+  height: 0.1em;
+  width: 10em;
+  background: white;
+}
+
+@media screen and (max-width: 700px) {
+  .main-login-form {
+    padding: 1.5em 1em; // 更小的内边距
+  }
+
+  .line {
+    width: 7em;
+  }
+
+  .username-input,
+  .password-input,
+  .login-button {
+    font-size: 1em; // 更小的字体大小
+  }
 }
