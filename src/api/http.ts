@@ -10,7 +10,7 @@ export interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 }
 
 const config = {
-    baseURL: "https://educate.answer.ac.cn", // 基地址
+    baseURL: "http://educateserver.zeabur.internal:8080", // 基地址
     timeout: 10000, // 超时时间
     withCredentials: true, // 允许携带cookie
 }

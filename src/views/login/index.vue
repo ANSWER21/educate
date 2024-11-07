@@ -37,7 +37,7 @@
               minlength="6"
               placeholder="请输入验证码"
           />
-          <button class="get-code-btn">获取验证码</button>
+          <button type="button" class="get-code-btn" @click="getEmailVerificationCode('275375496@qq.com')">获取验证码</button>
         </div>
         <input
             class="password-input"
@@ -53,6 +53,7 @@
 
 <script setup lang="ts">
 import {ref} from 'vue';
+import {getEmailVerificationCode} from "@/api/models/account.ts";
 
 type FormType = 'login' | 'register';
 
