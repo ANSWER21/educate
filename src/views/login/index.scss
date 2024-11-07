@@ -21,19 +21,21 @@
   max-width: 500px; // 最大宽度限制
 }
 
-.login-form-label {
+.form-tabs {
   text-align: center;
   font-size: 1.5em; // 稍微减小字体大小
 }
 
-.login-form {
+.login-form,
+.register-form {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-.username-input,
+.email-input,
+.verification-code-input,
 .password-input {
   background: #5805ed;
   box-shadow: inset -3px -3px 6px rgba(255, 255, 255, 0.25),
@@ -46,20 +48,20 @@
   font-weight: bold;
   margin: 0.5em 0;
   color: white;
+
+  &::placeholder {
+    color: white;
+    font-weight: bold;
+  }
+
+  &:focus {
+    border: 2px solid rgba(255, 255, 255, 0.327);
+  }
 }
 
-.username-input::placeholder,
-.password-input::placeholder {
-  color: white;
-  font-weight: bold;
-}
-
-.username-input:focus,
-.password-input:focus {
-  border: 2px solid rgba(255, 255, 255, 0.327);
-}
-
-.login-button {
+//登录、注册按钮
+.login-button,
+.register-button {
   width: 100%;
   margin: 0 auto;
   font-weight: bold;
@@ -97,6 +99,49 @@
   }
 }
 
+// tab按钮
+.tab-button {
+  margin: 0; // 移除外边距，确保按钮之间没有间隙
+  font-weight: bold;
+  font-size: 0.65em; // 进一步减小字体大小以使按钮更小
+  padding: 0.4em 0.8em; // 减小内边距
+  background: #3c0793;
+  outline: none;
+  border: none;
+  color: white;
+  transition: all 0.5s;
+  cursor: pointer;
+  transform: perspective(1px) translateZ(0);
+
+  &.left-round {
+    border-radius: 0 10px 10px 0; // 右侧圆角
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25), // 只在右侧添加阴影
+    -3px -3px 0 rgba(255, 255, 255, 0); // 左侧无阴影
+  }
+
+  &.right-round {
+    border-radius: 10px 0 0 10px; // 左侧圆角
+    box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.25), // 只在左侧添加阴影
+    3px -3px 0 rgba(255, 255, 255, 0); // 右侧无阴影
+  }
+
+  &:hover {
+    background: #4f0aa3; // 鼠标覆盖时背景变为稍浅的紫色
+    color: white; // 字体颜色保持白色
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3), -3px -3px 6px rgba(255, 255, 255, 0.2); // 增强外阴影
+  }
+
+  &:active {
+    box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.2),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.2); // 点击时增强内阴影
+  }
+
+  &.selected {
+    background: white; // 选中时背景变为白色
+    color: #3c0793; // 字体颜色变为原背景色
+  }
+}
+
 .divider {
   display: flex;
   justify-content: center;
@@ -111,6 +156,38 @@
   background: white;
 }
 
+.verification-container {
+  width: 87.5%;
+  display: flex; /* 启用Flexbox */
+  align-items: center; /* 子元素在垂直方向上居中对齐 */
+}
+
+.verification-code-input {
+  flex-grow: 1; /* 输入框占据剩余空间 */
+  margin-right: 10px; /* 在按钮和输入框之间添加间隔 */
+  box-sizing: border-box; /* 边框和内边距包含在宽度内 */
+  width: 0; /* 自动调整宽度以填充可用空间 */
+}
+
+.get-code-btn {
+  white-space: nowrap; /* 防止按钮文本换行 */
+  box-sizing: border-box; /* 边框和内边距包含在宽度内 */
+  padding: 0.5em; /* 减小内边距使按钮更小 */
+  font-size: 1em; /* 使用更小的字体大小 */
+  background: #3c0793;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25),
+  -3px -3px 6px rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  color: white;
+  transition: all 0.5s;
+  cursor: pointer;
+  transform: perspective(1px) translateZ(0);
+}
+
+
+
 @media screen and (max-width: 700px) {
   .main-login-form {
     padding: 1.5em 1em; // 更小的内边距
@@ -120,9 +197,11 @@
     width: 7em;
   }
 
-  .username-input,
+  .email-input,
+  .verification-code-input,
   .password-input,
-  .login-button {
+  .login-button,
+  .register-button {
     font-size: 1em; // 更小的字体大小
   }
 }
