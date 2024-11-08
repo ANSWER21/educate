@@ -62,6 +62,12 @@ import {emailLogin, emailRegister, getEmailVerificationCode} from "@/api/models/
 import {validateEmail} from "@/utils/verify.ts";
 import {ElMessage} from "element-plus";
 import {CODE_SUCCESS} from "@/models/resultJson.ts";
+import {useAccountStore} from "@/stores/accountStore.ts";
+import {useRouter} from "vue-router";
+import {HOME_URL} from "@/config";
+
+const router = useRouter();
+const accountStore = useAccountStore()
 // tab切换登录/注册
 type FormType = 'login' | 'register';
 const formType = ref<FormType>('login');
@@ -132,6 +138,10 @@ function handleLoginSubmit() {
   emailLogin(email, password).then(res => {
     if (res.code == CODE_SUCCESS) {
       ElMessage.success('登录成功')
+      const accountInfo = res.data
+      accountStore.setToken(accountInfo.userName)
+      accountStore.setAccountInfo(accountInfo)
+      router.push(HOME_URL);
     } else {
       ElMessage.error(`登录失败:${res.msg}`)
     }

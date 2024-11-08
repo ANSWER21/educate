@@ -1,8 +1,14 @@
 export interface Account {
     id: number;
-    username: string;
+    userName: string;
     password: string;
-    nickname: string;
+    nickName: string;
+    avatar: string;
+    email: string;
+    phoneNumber: string;
+    openIdQQ: string;
+    openIdWechat: string;
+    createTime: Date;
 }
 
 export interface AccountState {
