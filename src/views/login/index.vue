@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import {ref} from 'vue';
-import {emailLogin, emailRegister, getEmailVerificationCode} from "@/api/models/account.ts";
+import {emailRegister, getEmailVerificationCode} from "@/api/models/account.ts";
 import {validateEmail} from "@/utils/verify.ts";
 import {ElMessage} from "element-plus";
 import {CODE_SUCCESS} from "@/models/resultJson.ts";
@@ -134,20 +134,22 @@ function getVerificationCode() {
 }
 
 function handleLoginSubmit() {
-  const {email, password} = formData.value
-  emailLogin(email, password).then(res => {
-    if (res.code == CODE_SUCCESS) {
-      ElMessage.success('登录成功')
-      const accountInfo = res.data
-      accountStore.setToken(accountInfo.userName)
-      accountStore.setAccountInfo(accountInfo)
-      router.push(HOME_URL);
-    } else {
-      ElMessage.error(`登录失败:${res.msg}`)
-    }
-  }).catch((error) => {
-    ElMessage.error(error.message)
-  })
+  accountStore.setToken("token")
+  router.push(HOME_URL);
+  // const {email, password} = formData.value
+  // emailLogin(email, password).then(res => {
+  //   if (res.code == CODE_SUCCESS) {
+  //     ElMessage.success('登录成功')
+  //     const accountInfo = res.data
+  //     accountStore.setToken(accountInfo.userName)
+  //     accountStore.setAccountInfo(accountInfo)
+  //     router.push(HOME_URL);
+  //   } else {
+  //     ElMessage.error(`登录失败:${res.msg}`)
+  //   }
+  // }).catch((error) => {
+  //   ElMessage.error(error.message)
+  // })
 }
 
 function handleRegisterSubmit() {
