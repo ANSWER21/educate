@@ -10,7 +10,7 @@ export interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 }
 
 const config = {
-    baseURL: "http://educateserver.zeabur.internal:8080", // 基地址
+    baseURL: "https://educateserver.answer.ac.cn", // 基地址
     timeout: 10000, // 超时时间
     withCredentials: true, // 允许携带cookie
 }
@@ -28,11 +28,12 @@ class HttpRequest {
             (config: CustomAxiosRequestConfig) => {
                 const accountStore = useAccountStore();
                 if (config.headers && typeof config.headers.set === "function") {
-                    config.headers.set("token", accountStore.token);
+                    config.headers['token'] = accountStore.token;
                 }
                 return config;
             },
             (error: AxiosError) => {
+                console.log("请求错误", error)
                 return Promise.reject(error);
             })
 
@@ -40,10 +41,10 @@ class HttpRequest {
             (response: AxiosResponse & { config: CustomAxiosRequestConfig }) => {
                 const {data, config} = response;
                 config.loading && tryHideFullScreenLoading();
-
                 return data;
             },
             async (error: AxiosError) => {
+                console.log("响应错误", error)
                 const {response} = error;
                 tryHideFullScreenLoading();
                 if (response) checkStatus(response.status);

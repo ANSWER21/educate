@@ -1,6 +1,10 @@
+export const CODE_SUCCESS = 0 // 成功
+export const CODE_HANDLE = 1 // 保持
+export const CODE_ERROR = -1 // 失败
+
 // 请求响应参数（不包含data）
 export interface Result {
-    code: string;
+    code: number;
     msg: string;
 }
 
