@@ -7,7 +7,7 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  background-color: #5805ed;
+  background: url("@/assets/images/main_bg_4.jpg");
   color: white;
   font-family: "Poppins", sans-serif;
   align-items: center;
@@ -20,7 +20,7 @@
     width: 80%;
     padding: 10px 20px;
     margin-top: 30px;
-    background: #3c0793;
+    background: rgba(60, 7, 147, 0.8);
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25),
     -3px -3px 6px rgba(255, 255, 255, 0.15);
     border-radius: 10px;
@@ -51,7 +51,7 @@
     flex-grow: 1;
     width: 80%;
     display: flex;
-    background: #3c0793;
+    background: rgba(60, 7, 147, 0.8);
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25),
     -3px -3px 6px rgba(255, 255, 255, 0.15);
     border-radius: 10px;
@@ -77,6 +77,21 @@
       height: 260px;
       box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25),
       -3px -3px 6px rgba(255, 255, 255, 0.15);
+    }
+
+    .item-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .item-image {
+        height: 160px;
+      }
+
+      .item-title {
+        font-size: 20px;
+        color: white;
+      }
     }
 
     .pagination {

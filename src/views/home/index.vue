@@ -19,8 +19,8 @@
       <div class="masonry">
         <div v-for="item in items" :key="item.id" class="masonry-item">
           <div class="item-content">
-            <h2>{{ item.title }}</h2>
-            <p>{{ item.description }}</p>
+            <el-image class="item-image" :src="item.url" fit="cover"/>
+            <el-text class="item-title">{{ item.description }}</el-text>
           </div>
         </div>
       </div>
@@ -45,8 +45,8 @@ import {ElAvatar, ElInput, ElPagination} from 'element-plus';
 const select = ref('1')
 const searchQuery = ref('');
 const items = ref([
-  {id: 1, title: 'Item 1', description: 'Description of item 1'},
-  {id: 2, title: 'Item 2', description: 'Description of item 2'},
+  {id: 1, url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', description: '标题'},
+  {id: 2, url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', description: '标题'},
   // Add more items as needed...
 ]);
 const currentPage = ref(1);
