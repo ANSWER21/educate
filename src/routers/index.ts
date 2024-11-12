@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
 import NProgress from "nprogress";
-import {HOME_URL, LOGIN_URL, ROUTER_WHITE_LIST} from "@/config";
+import {CONSOLE_URL, EXAM_UPLOAD_URL, HOME_URL, LOGIN_URL, ROUTER_WHITE_LIST} from "@/config";
 import {useAccountStore} from "@/stores/accountStore.ts";
 
 
@@ -21,6 +21,22 @@ export const staticRouter: RouteRecordRaw[] = [
         path: LOGIN_URL,
         name: "login",
         component: () => import("@/views/login/index.vue")
+    },
+    {
+        path: CONSOLE_URL,
+        name: "console",
+        component: () => import("@/views/console/index.vue"),
+        children: [
+            {
+                path: EXAM_UPLOAD_URL,
+                name: "exam_upload",
+                component: () => import("@/views/console/pages/exam/upload.vue"),
+                meta: {
+                    title: "真题上传",
+                    isKeepAlive: false
+                }
+            }
+        ]
     }
 ];
 

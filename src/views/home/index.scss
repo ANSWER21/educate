@@ -15,8 +15,7 @@
 
   .header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     width: 80%;
     padding: 10px 20px;
     margin-top: 30px;
@@ -25,25 +24,28 @@
     -3px -3px 6px rgba(255, 255, 255, 0.15);
     border-radius: 10px;
 
-    .search-select {
-      background: #3c0793; // 使用与分页组件相同的背景色
-      color: white; // 确保文本颜色为白色，提高可读性
-      border: none; // 移除边框
-      box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25), // 添加外阴影增加立体感
-      -3px -3px 6px rgba(255, 255, 255, 0.15);
-    }
+    .search-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-    .search-box {
-      flex-grow: 1;
-      margin-right: 20px;
-      --el-input-bg-color: #5805ed; // Element Plus背景颜色
-      --el-input-text-color: #fff; // Element Plus文本颜色
-      --el-input-border-color: #fff;
-    }
+      :deep(.search-select ) {
 
-    .user-avatar {
-      width: 40px;
-      height: 40px;
+      }
+
+      .search-box {
+        flex-grow: 1;
+        margin-right: 20px;
+        --el-input-bg-color: #5805ed; // Element Plus背景颜色
+        --el-input-text-color: #fff; // Element Plus文本颜色
+        --el-input-border-color: #fff;
+      }
+
+      .user-avatar {
+        width: 60px;
+        height: 40px;
+      }
     }
   }
 
@@ -61,23 +63,6 @@
     align-items: center;
     padding: 20px;
     overflow: auto;
-
-    .masonry {
-      flex-grow: 1;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      grid-gap: 16px;
-      width: 100%;
-    }
-
-    .masonry-item {
-      background: #3c0793;
-      border-radius: 10px;
-      padding: 20px;
-      height: 260px;
-      box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25),
-      -3px -3px 6px rgba(255, 255, 255, 0.15);
-    }
 
     .item-content {
       display: flex;

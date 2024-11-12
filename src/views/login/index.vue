@@ -136,6 +136,7 @@ function getVerificationCode() {
 function handleLoginSubmit() {
   accountStore.setToken("token")
   router.push(HOME_URL);
+  // router.push(CONSOLE_URL);
   // const {email, password} = formData.value
   // emailLogin(email, password).then(res => {
   //   if (res.code == CODE_SUCCESS) {

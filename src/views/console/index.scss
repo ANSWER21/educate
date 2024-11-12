@@ -1,0 +1,51 @@
+.layout-header {
+  background-color: #3a3f44; /* 设置头部背景颜色 */
+  color: #fff; /* 设置头部文字颜色 */
+  padding: 10px 20px; /* 设置内边距 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 增加阴影 */
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  font-size: 18px; /* 增加字体大小 */
+  font-weight: bold; /* 加粗字体 */
+  margin-right: auto; /* 使标题和右侧内容分开 */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.user-dropdown {
+  display: flex;
+  align-items: center;
+}
+
+.layout-menu {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  background-color: #545c64; /* 设置背景颜色 */
+  height: 100vh; /* 设置高度为视口高度 */
+  transition: 0.3s;
+
+  &::-webkit-scrollbar {
+    width: 0 !important;
+  }
+}
+
+.el-main {
+  background-color: var(--system-container-background);
+  height: 100%;
+  padding: 0;
+  overflow-x: hidden;
+}
