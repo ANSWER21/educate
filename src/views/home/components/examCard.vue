@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {Exam, getSubjectTip} from "@/models/exam.ts";
-import {onMounted, ref, toRefs, watch} from "vue";
+import {computed, onMounted, ref, toRefs, watch} from "vue";
 import {format} from "date-fns";
 import {CircleCheck, Loading} from '@element-plus/icons-vue';
 import {getExamList} from "@/api/models/exam.ts";
@@ -10,11 +10,12 @@ import {ElMessage} from "element-plus";
 // 子组件接收值
 const props = defineProps<{
   subject: string;
+  filterKeyword: string;
   dateRange: Date[];
 }>();
 
 // 解构 props
-const {subject, dateRange} = toRefs(props);
+const {subject, filterKeyword, dateRange} = toRefs(props);
 
 const exams = ref<Exam[]>([]);
 const currentPage = ref(1);
@@ -23,6 +24,21 @@ const lastPageInfo = ref<PageInfo<Exam> | null>(null);
 const isLoading = ref(false); // 加载状态
 const listBottomTip = ref<string>("")
 
+// 使用计算属性进行过滤
+const filteredExams = computed(() => {
+  const lowerKeyword = filterKeyword.value.trim().toLowerCase();
+
+  // 如果关键词为空或仅包含空白字符，直接返回原列表
+  if (!lowerKeyword) {
+    return exams.value;
+  }
+  return exams.value.filter((exam) => {
+    return (
+        exam.title.toLowerCase().includes(lowerKeyword) || // 在 title 中搜索
+        exam.subject.toLowerCase().includes(lowerKeyword) // 在 subject 中搜索
+    );
+  });
+});
 
 // 工具函数：获取文件名
 function getFileName(url: string): string {
@@ -100,11 +116,12 @@ watch(dateRange, () => {
   refreshData();
 }, {deep: true}); // 确保监听 dateRange 数组的内容变化
 </script>
+filterKeyword
 
 <template>
   <div class="exam-list" v-infinite-scroll="loadNextPage" :infinite-scroll-disabled="isLoading"
        infinite-scroll-distance="50">
-    <div v-for="exam in exams" class="exam-item">
+    <div v-for="exam in filteredExams" class="exam-item">
       <h2 class="item-title">{{ exam.title }}</h2>
       <h4 class="subject">{{ getSubjectTip(exam.subject) }}</h4>
       <p class="exam-date">{{ format(exam.date, "yyyy-MM-dd") }}</p>

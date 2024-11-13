@@ -23,7 +23,7 @@
             class="date-picker"
         />
         <el-input
-            v-model="searchQuery"
+            v-model="filterKeyword"
             placeholder="请输入搜索内容"
             class="search-box"
         />
@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="content">
-      <exam-card :subject="subject" :dateRange="dateRange"/>
+      <exam-card :subject="subject" :dateRange="dateRange" :filterKeyword="filterKeyword"/>
     </div>
   </div>
 </template>
@@ -47,7 +47,7 @@ import ExamCard from "@/views/home/components/examCard.vue";
 import {SUBJECTS} from "@/models/exam.ts";
 
 
-const searchQuery = ref('');
+const filterKeyword = ref('');
 
 
 const subject = ref("(101)政治")
