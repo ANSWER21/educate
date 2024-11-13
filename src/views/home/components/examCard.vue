@@ -32,7 +32,6 @@ function getFileName(url: string): string {
 
 // 加载下一页数据
 function loadNextPage() {
-  console.log(`isLoading=${isLoading.value};hasNextPage=${lastPageInfo.value?.hasNextPage}`)
   if (isLoading.value || lastPageInfo.value == null || lastPageInfo.value?.hasNextPage == false) {
     listBottomTip.value = "没有更多数据了";
     return;
@@ -48,9 +47,16 @@ function loadNextPage() {
 
 // 获取数据方法
 const refreshData = (append = false) => {
-  const fromDate = dateRange.value ? dateRange.value[0] : null;
-  const toDate = dateRange.value ? dateRange.value[1] : null;
+  const fromDate = dateRange.value && dateRange.value[0]
+      ? new Date(dateRange.value[0].setHours(0, 0, 0, 0))  // 转换为 ISO 格式字符串
+      : null;
 
+  const toDate = dateRange.value && dateRange.value[1]
+      ? new Date(dateRange.value[1].setHours(23, 59, 59, 999))  // 转换为 ISO 格式字符串
+      : null;
+
+
+  console.log("加载下一页数据", subject.value, fromDate, toDate)
   getExamList(
       subject.value,
       fromDate,

@@ -21,8 +21,8 @@ export const getExamTitles = (title: string) => http.get<string[]>('/api/v1/exam
 // 获取考试列表
 export const getExamList = (subject: string, formDate: Date | null, toDate: Date | null, pageNum: number = 1, pageSize: number = 10) => http.get<PageInfo<Exam>>('/api/v1/exam/pub/get/exam', {
     subject: subject,
-    formDate: formDate,
-    toDate: toDate,
+    formDate: formDate?.toISOString(),
+    toDate: toDate?.toISOString(),
     pageNum: pageNum,
     pageSize: pageSize
 })

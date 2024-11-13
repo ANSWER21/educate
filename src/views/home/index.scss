@@ -29,22 +29,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-
-      :deep(.search-select ) {
-
-      }
-
-      .search-box {
-        flex-grow: 1;
-        margin-right: 20px;
-        --el-input-bg-color: #5805ed; // Element Plus背景颜色
-        --el-input-text-color: #fff; // Element Plus文本颜色
-        --el-input-border-color: #fff;
-      }
+      gap: 15px;
 
       .user-avatar {
-        width: 60px;
-        height: 40px;
+        width: 58px; /* 确保头像的宽度为固定值 */
+        height: 40px; /* 确保头像的高度为固定值 */
+        border: 2px solid #ffffff; /* 添加白色边框以增强可见性 */
+        overflow: hidden; /* 确保头像图片内容不超出圆形区域 */
       }
     }
   }
@@ -77,14 +68,6 @@
         font-size: 20px;
         color: white;
       }
-    }
-
-    .pagination {
-      padding: 10px;
-      background: #3c0793;
-      box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25),
-      -3px -3px 6px rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
     }
   }
 }
