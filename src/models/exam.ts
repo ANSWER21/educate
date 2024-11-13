@@ -8,6 +8,15 @@ export interface Exam {
     files: string[],
 }
 
+export const getSubjectTip = (value: string): string => {
+    const subject = findSubjectByValue(value)
+    return `(${subject?.value})${subject?.label}`
+}
+
+export function findSubjectByValue(value: string): Select<string, string> | undefined {
+    return SUBJECTS.find(subject => subject.value === value);
+}
+
 export const SUBJECTS: Select<string, string>[] = [
     {label: "政治", value: "101"},
     {label: "英语一", value: "201"},

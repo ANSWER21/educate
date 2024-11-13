@@ -21,81 +21,24 @@
       </div>
     </div>
     <div class="content">
-      <exam-card :exams="exams"/>
-      <el-pagination
-          v-model:current-page="currentPage"
-          :page-size="pageSize"
-          :background="background"
-          layout="prev, pager, next"
-          :total="total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-      />
+      <exam-card :subject="subject" :dateRange="dateRange"/>
     </div>
   </div>
 </template>
 
 
 <script setup lang="ts">
-import {ref, watch} from 'vue';
-import {ElAvatar, ElInput, ElMessage, ElPagination} from 'element-plus';
+import {ref} from 'vue';
+import {ElAvatar, ElInput} from 'element-plus';
 import ExamCard from "@/views/home/components/examCard.vue";
-import {Exam, SUBJECTS} from "@/models/exam.ts";
-import {onMounted} from "@vue/runtime-core";
-import {getExamList} from "@/api/models/exam.ts";
-import {CODE_SUCCESS} from "@/models/resultJson.ts";
+import {SUBJECTS} from "@/models/exam.ts";
+
 
 const searchQuery = ref('');
-const exams = ref<Exam[]>([])
-const currentPage = ref(1);
-const pageSize = ref(10);
-const background = ref(true)
-const total = ref(exams.value.length);
+
+
 const subject = ref("(101)政治")
-const dateRange = ref<Date[]>()
-
-onMounted(() => {
-  refreshData()
-})
-
-watch(subject, () => {
-  refreshData()
-})
-
-watch(dateRange, () => {
-  refreshData()
-})
-
-const refreshData = () => {
-  const fromDate = dateRange.value ? dateRange.value[0] : null
-  const toDate = dateRange.value ? dateRange.value[1] : null
-  console.log(`subject:${subject.value};fromDate:${fromDate};toDate:${toDate}`)
-  getExamList(
-      subject.value,
-      fromDate,
-      toDate,
-      currentPage.value,
-      pageSize.value
-  ).then(res => {
-    console.log(`res=${JSON.stringify(res.data)}`)
-    if (res.code == CODE_SUCCESS) {
-      exams.value = res.data.list
-    } else {
-      ElMessage.error(`刷新失败:${res.msg}`)
-    }
-  }).catch((error) => {
-    console.log(`error=${error.message}`)
-    ElMessage.error(error.message)
-  })
-}
-
-const handleSizeChange = (newSize: number) => {
-  pageSize.value = newSize;
-};
-
-const handleCurrentChange = (newPage: number) => {
-  currentPage.value = newPage;
-};
+const dateRange = ref<Date[]>([])
 
 </script>
 
