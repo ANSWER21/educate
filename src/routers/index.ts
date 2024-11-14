@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
 import NProgress from "nprogress";
-import {CONSOLE_URL, EXAM_UPLOAD_URL, HOME_URL, LOGIN_URL, ROUTER_WHITE_LIST} from "@/config";
+import {ACCOUNT_URL, CONSOLE_URL, EXAM_UPLOAD_URL, HOME_URL, LOGIN_URL, ROUTER_WHITE_LIST, SUGGEST_URL} from "@/config";
 import {useAccountStore} from "@/stores/accountStore.ts";
 
 
@@ -21,6 +21,16 @@ export const staticRouter: RouteRecordRaw[] = [
         path: LOGIN_URL,
         name: "login",
         component: () => import("@/views/login/index.vue")
+    },
+    {
+        path:ACCOUNT_URL,
+        name: "account",
+        component: () => import("@/views/account/index.vue"),
+    },
+    {
+        path:SUGGEST_URL,
+        name: "suggest",
+        component: () => import("@/views/suggest/index.vue"),
     },
     {
         path: CONSOLE_URL,

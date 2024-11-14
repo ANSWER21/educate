@@ -64,7 +64,9 @@ import {Exam, SUBJECTS} from "@/models/exam.ts";
 import {Select} from "@/models/select.ts";
 import {createExam, deleteFile, getExamTitles, uploadFile} from "@/api/models/exam.ts";
 import {CODE_SUCCESS} from "@/models/resultJson.ts";
+import {useAccountStore} from "@/stores/accountStore.ts";
 
+const accountStorage = useAccountStore();
 
 // 考试信息
 const exam = ref<Exam>({
@@ -72,6 +74,7 @@ const exam = ref<Exam>({
   title: '',
   subject: '',
   date: new Date(),
+  createId: accountStorage.accountInfo?.id ?? -1,
   files: []
 });
 

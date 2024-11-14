@@ -20,3 +20,10 @@ export const emailRegister = (email: string, password: any, verificationCode: an
 export const emailLogin = (email: string, password: any) => {
     return http.get<Account>(`/api/v1/account/pub/login/email`, {email: email, password: password});
 };
+
+// 上传头像
+export const uploadAvatar = (data: FormData) => http.post<Account>('/api/v1/account/pub/update/avatar', data, {
+    headers: {
+        'Content-Type': 'multipart/form-data'
+    }
+})

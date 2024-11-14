@@ -6,6 +6,12 @@ export const HOME_URL: string = "/home";
 // 登录页地址（默认）
 export const LOGIN_URL: string = "/login";
 
+// 个人中心
+export const ACCOUNT_URL: string = "/account";
+
+// 已经反馈
+export const SUGGEST_URL: string = "/suggest";
+
 // 控制台
 export const CONSOLE_URL: string = "/console";
 

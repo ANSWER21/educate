@@ -129,7 +129,9 @@ filterKeyword
       <ul v-if="exam.files && exam.files.length">
         <li v-for="url in exam.files" :key="url" class="file-item">
           <span class="file-name">{{ getFileName(url) }}</span>
-          <el-button :href="url" type="primary" size="small" plain class="download-btn" download>下载</el-button>
+          <a :href="url" target="_blank">
+            <el-button type="primary" size="small" plain class="view-btn">查看并下载</el-button>
+          </a>
         </li>
       </ul>
     </div>

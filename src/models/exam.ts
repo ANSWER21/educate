@@ -5,6 +5,7 @@ export interface Exam {
     title: string,
     subject: string,
     date: Date,
+    createId: number,
     files: string[],
 }
 
