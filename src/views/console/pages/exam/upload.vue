@@ -33,6 +33,7 @@
       </el-form-item>
       <el-form-item label="资料文件:">
         <el-upload
+            ref="upload"
             drag
             action="#"
             accept=".pdf"
@@ -67,6 +68,7 @@ import {CODE_SUCCESS} from "@/models/resultJson.ts";
 import {useAccountStore} from "@/stores/accountStore.ts";
 
 const accountStorage = useAccountStore();
+const upload = ref()
 
 // 考试信息
 const exam = ref<Exam>({
@@ -111,7 +113,7 @@ const handleUpload = (params: any) => {
         exam.value.files.push(res.data);
         resolve(res);
       } else {
-        ElMessage.error(`登录失败:${res.msg}`)
+        ElMessage.error(`上传失败:${res.msg}`)
         reject(res);
       }
     }).catch((error) => {
@@ -134,6 +136,10 @@ const onSubmit = () => {
   createExam(exam.value).then(res => {
     if (res.code == CODE_SUCCESS) {
       ElMessage.success('创建成功')
+      // 清空文件列表
+      upload.value.clearFiles();
+      exam.value.files = []; // 同步清空上传的文件数据
+      fileMap.clear(); // 清空文件映射表
     } else {
       ElMessage.error(`创建失败:${res.msg}`)
     }
