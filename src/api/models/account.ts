@@ -27,3 +27,16 @@ export const uploadAvatar = (data: FormData) => http.post<Account>('/api/v1/acco
         'Content-Type': 'multipart/form-data'
     }
 })
+
+// 更新验证码
+export const updateEmail = (id: number, email: string, verificationCode: string) => {
+    return http.get<boolean>("/api/v1/account/pub/update/email", {
+        id: id,
+        email: email,
+        verificationCode: verificationCode
+    })
+}
+
+
+// 更新用户信息
+export const updateAccount = (account: Account) => http.post<Account>("/api/v1/account/pub/update/account", account)
