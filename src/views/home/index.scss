@@ -7,8 +7,9 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  background: url("@/assets/images/main_bg_4.jpg");
-  color: white;
+  background: url("@/assets/images/main_bg_4.jpg") no-repeat center center;
+  background-size: cover;
+  color: #ffffff;
   font-family: "Poppins", sans-serif;
   align-items: center;
   justify-content: center;
@@ -20,8 +21,7 @@
     padding: 10px 20px;
     margin-top: 30px;
     background: rgba(60, 7, 147, 0.8);
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25),
-    -3px -3px 6px rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 
     .search-bar {
@@ -29,12 +29,18 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 15px;
+      font-size: 14px; // 统一字体大小
+      gap: 10px;
 
+      .el-select, .el-date-picker, .el-input {
+        border: 1px solid #ffffff; // 统一边框样式
+        background: rgba(255, 255, 255, 0.1); // 调整背景色
+        border-radius: 5px; // 统一边框圆角
+      }
       .user-avatar {
         width: 40px; /* 确保头像的宽度为固定值 */
         height: 40px; /* 确保头像的高度为固定值 */
-        border: 2px solid #ffffff; /* 添加白色边框以增强可见性 */
+        border: 1px solid #ffffff; /* 添加白色边框以增强可见性 */
         overflow: hidden; /* 确保头像图片内容不超出圆形区域 */
       }
     }
@@ -45,14 +51,13 @@
     width: 80%;
     display: flex;
     background: rgba(60, 7, 147, 0.8);
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25),
-    -3px -3px 6px rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     margin-top: 10px;
     margin-bottom: 30px;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 15px;
     overflow: auto;
 
     .item-content {
@@ -65,7 +70,8 @@
       }
 
       .item-title {
-        font-size: 20px;
+        font-size: 18px; // 增大标题字体大小
+        line-height: 1.5; // 增加行间距
         color: white;
       }
     }

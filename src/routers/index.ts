@@ -1,6 +1,15 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
 import NProgress from "nprogress";
-import {ACCOUNT_URL, CONSOLE_URL, EXAM_UPLOAD_URL, HOME_URL, LOGIN_URL, ROUTER_WHITE_LIST, SUGGEST_URL} from "@/config";
+import {
+    ACCOUNT_URL,
+    CONSOLE_URL,
+    EXAM_MANAGE_URL,
+    EXAM_UPLOAD_URL,
+    HOME_URL,
+    LOGIN_URL,
+    ROUTER_WHITE_LIST,
+    SUGGEST_URL
+} from "@/config";
 import {useAccountStore} from "@/stores/accountStore.ts";
 
 
@@ -43,6 +52,15 @@ export const staticRouter: RouteRecordRaw[] = [
                 component: () => import("@/views/console/pages/exam/upload.vue"),
                 meta: {
                     title: "真题上传",
+                    isKeepAlive: false
+                }
+            },
+            {
+                path: EXAM_MANAGE_URL,
+                name: "exam_manage",
+                component: () => import("@/views/console/pages/exam/manage.vue"),
+                meta: {
+                    title: "真题管理",
                     isKeepAlive: false
                 }
             }

@@ -18,6 +18,9 @@ export const CONSOLE_URL: string = "/console";
 // 真题上传
 export const EXAM_UPLOAD_URL: string = "exam_upload";
 
+// 真题管理
+export const EXAM_MANAGE_URL: string = "exam_manage";
+
 // 默认主题颜色
 export const DEFAULT_PRIMARY: string = "#009688";
 

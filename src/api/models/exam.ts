@@ -15,6 +15,21 @@ export const deleteFile = (fileUrl: string) => http.get<boolean>('/api/v1/exam/p
 // 创建考试
 export const createExam = (data: Exam) => http.post<boolean>('/api/v1/exam/pub/create/exam', data)
 
+// 删除考试
+export const deleteExam = (examId: number) => http.get<boolean>('/api/v1/exam/pub/delete/exam', {examId: examId})
+
+// 向考试添加文件
+export const appendFileToExam = (examId: number, fileUrl: string) => http.get<boolean>('/api/v1/exam/pub/append/file', {
+    examId: examId,
+    fileUrl: fileUrl
+})
+
+// 删除考试文件
+export const removeFileFromExam = (examId: number, fileUrl: string) => http.get<boolean>('/api/v1/exam/pub/remove/file', {
+    examId: examId,
+    fileUrl: fileUrl
+})
+
 // 获取考试题目
 export const getExamTitles = (title: string) => http.get<string[]>('/api/v1/exam/pub/get/exam/titles', {title: title})
 

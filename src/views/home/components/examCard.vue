@@ -6,6 +6,7 @@ import {CircleCheck, Loading} from '@element-plus/icons-vue';
 import {getExamList} from "@/api/models/exam.ts";
 import {CODE_SUCCESS, PageInfo} from "@/models/resultJson.ts";
 import {ElMessage} from "element-plus";
+import {getFileName} from "../../../utils/path.ts";
 
 // 子组件接收值
 const props = defineProps<{
@@ -40,11 +41,6 @@ const filteredExams = computed(() => {
   });
 });
 
-// 工具函数：获取文件名
-function getFileName(url: string): string {
-  const fileName = url.substring(url.lastIndexOf('/') + 1);
-  return fileName.replace(/_\d+(?=\.pdf$)/, "");
-}
 
 // 加载下一页数据
 function loadNextPage() {

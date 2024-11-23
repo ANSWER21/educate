@@ -33,9 +33,9 @@
 .layout-menu {
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+  overflow-y: auto; /* 内容超出时显示滚动条 */
   background-color: #545c64; /* 设置背景颜色 */
-  height: 100vh; /* 设置高度为视口高度 */
+  height: 100%; /* 设置高度为 100% */
   transition: 0.3s;
 
   &::-webkit-scrollbar {
@@ -47,5 +47,5 @@
   background-color: var(--system-container-background);
   height: 100%;
   padding: 0;
-  overflow-x: hidden;
+  overflow-y: auto; /* 内容超出时显示滚动条 */
 }

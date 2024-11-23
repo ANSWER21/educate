@@ -26,29 +26,27 @@
       </div>
     </el-header>
 
-    <el-container :style="{ height: scrollbarHeight + 'px' }">
-      <el-aside>
-        <el-scrollbar>
-          <el-menu class="layout-menu"
-                   :default-openeds="['1']"
-                   default-active="DramaList"
-                   active-text-color="#ffd04b"
-                   background-color="#545c64"
-                   text-color="#fff"
-                   @open="handleOpen"
-                   @close="handleClose">
-            <el-sub-menu index="1">
-              <template #title>
-                <el-icon>
-                  <message/>
-                </el-icon>
-                真题管理
-              </template>
-              <el-menu-item index="ExamUpload" @click="goTo(EXAM_UPLOAD_URL)">上传真题</el-menu-item>
-              <el-menu-item index="ExamList" @click="goTo('DramaList')">真题列表</el-menu-item>
-            </el-sub-menu>
-          </el-menu>
-        </el-scrollbar>
+    <el-container style="height: calc(100% - 60px)">
+      <el-aside width="200px">
+        <el-menu class="layout-menu"
+                 :default-openeds="['1']"
+                 default-active="DramaList"
+                 active-text-color="#ffd04b"
+                 background-color="#545c64"
+                 text-color="#fff"
+                 @open="handleOpen"
+                 @close="handleClose">
+          <el-sub-menu index="1">
+            <template #title>
+              <el-icon>
+                <message/>
+              </el-icon>
+              真题管理
+            </template>
+            <el-menu-item index="ExamUpload" @click="goTo(EXAM_UPLOAD_URL)">上传真题</el-menu-item>
+            <el-menu-item index="ExamList" @click="goTo(EXAM_MANAGE_URL)">真题列表</el-menu-item>
+          </el-sub-menu>
+        </el-menu>
       </el-aside>
       <el-main>
         <router-view/>
@@ -59,37 +57,22 @@
 
 <script lang="ts" setup>
 import {Message, Setting} from '@element-plus/icons-vue'
-import router from "@/routers";
-import {onBeforeUnmount, onMounted} from "@vue/runtime-core";
-import {ref} from "vue";
-import {useAccountStore} from "@/stores/accountStore.ts";
-import {EXAM_UPLOAD_URL} from "@/config";
+import {useAccountStore} from '@/stores/accountStore.ts'
+import {EXAM_MANAGE_URL, EXAM_UPLOAD_URL} from '@/config'
+import {useRouter} from "vue-router";
 
-const scrollbarHeight = ref(0);
-
-const calculateScrollbarHeight = () => {
-  const headerHeight = document.querySelector('#header')?.clientHeight || 0;
-  scrollbarHeight.value = window.innerHeight - headerHeight;
-};
-
-onMounted(() => {
-  calculateScrollbarHeight();
-  window.addEventListener('resize', calculateScrollbarHeight);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', calculateScrollbarHeight);
-});
+const router = useRouter();
 
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
+
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
 
 function goTo(name: any) {
-  router.push({name});
+  router.push({name})
 }
 </script>
 
