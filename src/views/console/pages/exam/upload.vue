@@ -87,9 +87,17 @@ let fileMap: Map<string, string> = new Map();
 
 const examSubjects = ref<Select<string, string>[]>(SUBJECTS);
 
+let timeout: ReturnType<typeof setTimeout>
 const querySearchAsync = (queryString: string, cb: (arg: any) => void) => {
   getExamTitles(queryString).then(res => {
-    cb(res.data);
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      // 将字符串列表转化为符合 el-autocomplete 的格式
+      const result = res.data.map((item: string) => ({
+        value: item,  // 这里的 value 是 el-autocomplete 期望的字段
+      }));
+      cb(result);
+    }, 3000 * Math.random())
   }).catch(error => {
     ElMessage.error(error.message);
   });
