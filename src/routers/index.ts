@@ -25,26 +25,31 @@ export const staticRouter: RouteRecordRaw[] = [
         path: HOME_URL,
         name: "home",
         component: () => import("@/views/home/index.vue"),
+        meta: {title: "首页"},
     },
     {
         path: LOGIN_URL,
         name: "login",
-        component: () => import("@/views/login/index.vue")
+        component: () => import("@/views/login/index.vue"),
+        meta: {title: "登录"},
     },
     {
         path:ACCOUNT_URL,
         name: "account",
         component: () => import("@/views/account/index.vue"),
+        meta: {title: "个人中心"},
     },
     {
         path:SUGGEST_URL,
         name: "suggest",
         component: () => import("@/views/suggest/index.vue"),
+        meta: {title: "建议反馈"},
     },
     {
         path: CONSOLE_URL,
         name: "console",
         component: () => import("@/views/console/index.vue"),
+        meta: {title: "控制台"},
         children: [
             {
                 path: EXAM_UPLOAD_URL,
