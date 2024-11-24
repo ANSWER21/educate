@@ -1,5 +1,5 @@
 import http from "@/api/http.ts";
-import {Account} from "@/models/account.ts";
+import {Account, ResponseLogin} from "@/models/account.ts";
 
 
 // 获取验证码
@@ -18,7 +18,7 @@ export const emailRegister = (email: string, password: any, verificationCode: an
 
 // 邮箱登录
 export const emailLogin = (email: string, password: any) => {
-    return http.get<Account>(`/api/v1/account/pub/login/email`, {email: email, password: password});
+    return http.get<ResponseLogin>(`/api/v1/account/pub/login/email`, {email: email, password: password});
 };
 
 // 上传头像

@@ -29,13 +29,15 @@
         />
         <el-dropdown>
           <el-avatar
-              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+              :src="accountStore.accountInfo?.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"
               class="user-avatar"
           />
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="router.push(ACCOUNT_URL)">个人中心</el-dropdown-item>
-              <el-dropdown-item @click="router.push(CONSOLE_URL)">控制台</el-dropdown-item>
+              <el-dropdown-item @click="router.push(CONSOLE_URL)" v-if="accountStore.accountInfo?.role == ROLE_ADMIN">
+                控制台
+              </el-dropdown-item>
               <el-dropdown-item @click="router.push(SUGGEST_URL)">意见反馈</el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -43,7 +45,7 @@
       </div>
     </div>
     <div class="content">
-      <exam-card :subject="subject" :dateRange="dateRange" :filterKeyword="filterKeyword"/>
+      <exam-list :subject="subject" :dateRange="dateRange" :filterKeyword="filterKeyword"/>
     </div>
   </div>
 </template>
@@ -52,12 +54,15 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import {ElAvatar, ElInput} from 'element-plus';
-import ExamCard from "@/views/home/components/examCard.vue";
+import ExamList from "@/views/home/components/examList.vue";
 import {SUBJECTS} from "@/models/exam.ts";
 import {ACCOUNT_URL, CONSOLE_URL, SUGGEST_URL} from "@/config";
 import {useRouter} from "vue-router";
+import {useAccountStore} from "@/stores/accountStore.ts";
+import {ROLE_ADMIN} from "@/models/account.ts";
 
 const router = useRouter();
+const accountStore = useAccountStore();
 const filterKeyword = ref('');
 
 

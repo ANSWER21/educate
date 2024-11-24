@@ -10,22 +10,22 @@ export const uploadFile = (data: FormData) => http.post<string>('/api/v1/exam/pu
 })
 
 // 删除文件
-export const deleteFile = (fileUrl: string) => http.get<boolean>('/api/v1/exam/pub/delete/file', {fileUrl: fileUrl})
+export const deleteFile = (fileUrl: string) => http.get<boolean>('/api/v1/exam/pri/delete/file', {fileUrl: fileUrl})
 
 // 创建考试
-export const createExam = (data: Exam) => http.post<boolean>('/api/v1/exam/pub/create/exam', data)
+export const createExam = (data: Exam) => http.post<boolean>('/api/v1/exam/pri/create/exam', data)
 
 // 删除考试
-export const deleteExam = (examId: number) => http.get<boolean>('/api/v1/exam/pub/delete/exam', {examId: examId})
+export const deleteExam = (examId: number) => http.get<boolean>('/api/v1/exam/pri/delete/exam', {examId: examId})
 
 // 向考试添加文件
-export const appendFileToExam = (examId: number, fileUrl: string) => http.get<boolean>('/api/v1/exam/pub/append/file', {
+export const appendFileToExam = (examId: number, fileUrl: string) => http.get<boolean>('/api/v1/exam/pri/append/file', {
     examId: examId,
     fileUrl: fileUrl
 })
 
 // 删除考试文件
-export const removeFileFromExam = (examId: number, fileUrl: string) => http.get<boolean>('/api/v1/exam/pub/remove/file', {
+export const removeFileFromExam = (examId: number, fileUrl: string) => http.get<boolean>('/api/v1/exam/pri/remove/file', {
     examId: examId,
     fileUrl: fileUrl
 })

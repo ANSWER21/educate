@@ -6,7 +6,7 @@ import {CircleCheck, Loading} from '@element-plus/icons-vue';
 import {getExamList} from "@/api/models/exam.ts";
 import {CODE_SUCCESS, PageInfo} from "@/models/resultJson.ts";
 import {ElMessage} from "element-plus";
-import {getFileName} from "../../../utils/path.ts";
+import {getFileName} from "@/utils/path.ts";
 
 // 子组件接收值
 const props = defineProps<{
@@ -112,21 +112,21 @@ watch(dateRange, () => {
   refreshData();
 }, {deep: true}); // 确保监听 dateRange 数组的内容变化
 </script>
-filterKeyword
 
 <template>
   <div class="exam-list" v-infinite-scroll="loadNextPage" :infinite-scroll-disabled="isLoading"
        infinite-scroll-distance="50">
     <div v-for="exam in filteredExams" class="exam-item">
-      <h2 class="item-title">{{ exam.title }}</h2>
-      <h4 class="subject">{{ getSubjectTip(exam.subject) }}</h4>
-      <p class="exam-date">{{ format(exam.date, "yyyy-MM-dd") }}</p>
+      <div class="header">
+        <h2 class="item-title">{{ exam.title }}</h2>
+        <p class="exam-date">{{ format(exam.date, "yyyy-MM-dd") }}</p>
+        <el-tag type="success">{{ getSubjectTip(exam.subject) }}</el-tag>
+      </div>
       <el-divider class="divider"/>
       <ul v-if="exam.files && exam.files.length">
         <li v-for="url in exam.files" :key="url" class="file-item">
-          <span class="file-name">{{ getFileName(url) }}</span>
           <a :href="url" target="_blank">
-            <el-button type="primary" size="small" plain class="view-btn">查看并下载</el-button>
+            {{ getFileName(url) }}
           </a>
         </li>
       </ul>
@@ -147,14 +147,14 @@ filterKeyword
 .exam-list {
   width: 90%;
   margin: auto;
-  padding: 20px;
+  padding: 10px;
 }
 
 .exam-item {
   background: #3c0793;
   border-radius: 10px;
   padding: 20px;
-  margin-bottom: 16px; // 每项之间的间隔
+  margin-bottom: 20px; // 每项之间的间隔
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3),
   -3px -3px 6px rgba(255, 255, 255, 0.2);
   color: #fff;
@@ -164,69 +164,68 @@ filterKeyword
   align-items: start;
 }
 
-.item-title {
-  margin: 0;
-  color: #FAD961; // 标题颜色
-  font-size: 1.5rem;
-}
-
-h4 {
-  margin: 10px 0;
-  color: #E3FDFD; // 科目颜色
-  font-size: 1.1rem;
-}
-
-p {
-  color: #D0F8F2; // 日期颜色
-  font-size: 1rem;
-}
-
-ul {
-  padding-left: 0;
-  margin-top: 10px;
-}
-
-li {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 8px 0;
-  font-size: 1rem;
+  margin-bottom: 10px;
 }
 
-.file-name {
-  flex: 1;
-  color: #FFF;
-  margin-right: 10px;
+.item-title {
+  margin: 0;
+  color: #FAD961; // 标题颜色
+  font-size: 1.3rem;
 }
 
-.download-btn {
-  background-color: #E3FDFD;
-  color: #3c0793;
-  padding: 5px 10px;
-  border-radius: 5px;
-  text-decoration: none;
+.exam-date {
+  margin: 0 20px;
+  color: #D0F8F2; // 日期颜色
   font-size: 0.9rem;
-  display: inline-block;
 }
 
-.download-btn:hover {
-  background-color: #FAD961;
-  color: #fff;
+h4 {
+  margin: 8px 0;
+  color: #E3FDFD; // 科目颜色
+  font-size: 1.0rem;
 }
 
-.download-btn:active {
-  background-color: #E3FDFD;
-  color: #3c0793;
+p {
+  margin: 5px 0;
+  color: #D0F8F2; // 日期颜色
+  font-size: 0.9rem;
+}
+
+
+/* 调整分割线样式 */
+.divider {
+  margin: 5px 0; /* 减少分割线的上下间距 */
+  border-color: #D0F8F2; /* 调整分割线的颜色 */
+  border-width: 1px; /* 调整分割线的粗细 */
+}
+
+ul {
+  width: 100%;
+  padding-left: 0;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+li {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 6px 0;
+  font-size: 1rem;
 }
 
 .bottom-tip {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 0.8rem; /* 减小提示文字大小 */
   color: #909399;
-  padding: 10px 0;
+  padding: 8px 0; /* 减少上下间距 */
 }
 
 .bottom-tip .el-icon {

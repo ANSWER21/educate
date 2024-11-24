@@ -135,15 +135,13 @@ function getVerificationCode() {
 
 function handleLoginSubmit() {
   accountStore.setToken("token")
-  // router.push(HOME_URL);
-  // router.push(CONSOLE_URL);
   const {email, password} = formData.value
   emailLogin(email, password).then(res => {
     if (res.code == CODE_SUCCESS) {
       ElMessage.success('登录成功')
-      const accountInfo = res.data
-      accountStore.setToken(accountInfo.userName)
-      accountStore.setAccountInfo(accountInfo)
+      const responseLogin = res.data
+      accountStore.setToken(responseLogin.token)
+      accountStore.setAccountInfo(responseLogin.account)
       router.push(HOME_URL);
     } else {
       ElMessage.error(`登录失败:${res.msg}`)
