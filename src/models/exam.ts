@@ -26,6 +26,7 @@ export const SUBJECTS: Select<string, string>[] = [
     {label: "数学二", value: "302"},
     {label: "数学三", value: "303"},
     {label: "管理类联考综合能力", value: "199"},
+    {label: "教育学专业基础综合", value: "311"},
     // {label: "应用伦理", value: "0151"},
     // {label: "金融", value: "0251"},
     // {label: "应用统计", value: "0252"},
