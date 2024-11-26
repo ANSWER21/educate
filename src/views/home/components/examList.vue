@@ -119,8 +119,8 @@ watch(dateRange, () => {
     <div v-for="exam in filteredExams" class="exam-item">
       <div class="header">
         <h2 class="item-title">{{ exam.title }}</h2>
-        <p class="exam-date">{{ format(exam.date, "yyyy-MM-dd") }}</p>
-        <el-tag type="success">{{ getSubjectTip(exam.subject) }}</el-tag>
+        <el-tag type="primary" class="date-tag">{{ format(exam.date, "yyyy-MM-dd") }}</el-tag>
+        <el-tag type="success" class="subject-tag">{{ getSubjectTip(exam.subject) }}</el-tag>
       </div>
       <el-divider class="divider"/>
       <ul v-if="exam.files && exam.files.length">
@@ -177,10 +177,13 @@ watch(dateRange, () => {
   font-size: 1.3rem;
 }
 
-.exam-date {
-  margin: 0 20px;
-  color: #D0F8F2; // 日期颜色
-  font-size: 0.9rem;
+.date-tag {
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+.subject-tag {
+  margin-left: 5px;
 }
 
 h4 {

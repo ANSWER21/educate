@@ -30,7 +30,10 @@
               v-model="exam.date"
               type="date"
               placeholder="选择日期和时间"
+              v-if="!ignoreDate"
           />
+          <el-switch v-model="ignoreDate" active-text="不区分年月" inactive-text="" @change="toggleIgnoreDate"
+                     style="margin-left: 20px"/>
         </el-form-item>
         <el-form-item label="资料文件:">
           <el-upload
@@ -69,8 +72,13 @@ import {Select} from '@/models/select.ts';
 import {createExam, deleteFile, getExamTitles, uploadFile} from '@/api/models/exam.ts';
 import {CODE_SUCCESS} from '@/models/resultJson.ts';
 import {useAccountStore} from '@/stores/accountStore.ts';
+import {UNLIMITED_DATE} from "@/utils/date.ts";
 
 const accountStorage = useAccountStore();
+
+const ignoreDate = ref(false)
+
+// 上传组件
 const upload = ref();
 
 // 考试信息
@@ -108,6 +116,10 @@ const handleSelect = (item: Record<string, any>) => {
   console.log(item);
 };
 
+const toggleIgnoreDate = (value: boolean) => {
+  ignoreDate.value = value;
+};
+
 // 文件上传
 const handleUpload = (params: any) => {
   const formData = new FormData();
@@ -143,6 +155,9 @@ const handleRemove = (file: any, _: any) => {
 
 // 提交表单
 const onSubmit = () => {
+  if (ignoreDate) {
+    exam.value.date = UNLIMITED_DATE;
+  }
   console.log(JSON.stringify(exam.value));
   createExam(exam.value).then(res => {
     if (res.code == CODE_SUCCESS) {
