@@ -36,6 +36,8 @@ export const SUBJECTS: Select<string, string>[] = [
     {label: "法硕(法学)联考", value: "497"},
     {label: "法硕(非法学)联考", value: "398"},
     {label: "法硕(非法学)联考", value: "498"},
+    {label: "经济类联考综合能力", value: "396"},
+    {label: "计算机科学与技术基础综合", value: "408"},
     // {label: "应用伦理", value: "0151"},
     // {label: "金融", value: "0251"},
     // {label: "应用统计", value: "0252"},
