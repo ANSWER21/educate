@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {Exam, getSubjectTip} from "@/models/exam.ts";
-import {computed, onMounted, ref, toRefs, watch} from "vue";
+import {computed, nextTick, onMounted, ref, toRefs, watch} from "vue";
 import {format} from "date-fns";
 import {CircleCheck, Loading} from '@element-plus/icons-vue';
 import {getExamList} from "@/api/models/exam.ts";
@@ -24,6 +24,9 @@ const pageSize = ref(10);
 const lastPageInfo = ref<PageInfo<Exam> | null>(null);
 const isLoading = ref(false); // 加载状态
 const listBottomTip = ref<string>("")
+
+// 获取 exam-list 元素的引用
+const examListRef = ref<HTMLElement | null>(null)
 
 // 使用计算属性进行过滤
 const filteredExams = computed(() => {
@@ -93,6 +96,14 @@ const refreshData = (append = false) => {
       })
       .finally(() => {
         isLoading.value = false; // 加载完成
+        if (!append) {
+          // 如果不是追加数据，滚动到顶部
+          nextTick(() => {
+            if (examListRef.value) {
+              examListRef.value.scrollTo(0, 0);
+            }
+          });
+        }
       });
 };
 
@@ -114,7 +125,7 @@ watch(dateRange, () => {
 </script>
 
 <template>
-  <div class="exam-list" v-infinite-scroll="loadNextPage" :infinite-scroll-disabled="isLoading"
+  <div ref="examListRef" class="exam-list" v-infinite-scroll="loadNextPage" :infinite-scroll-disabled="isLoading"
        infinite-scroll-distance="50">
     <div v-for="exam in filteredExams" class="exam-item">
       <div class="header">
@@ -148,6 +159,8 @@ watch(dateRange, () => {
   width: 90%;
   margin: auto;
   padding: 10px;
+  overflow-y: auto; // 确保 exam-list 可以滚动
+  max-height: 100vh; // 设置最大高度，根据需要调整
 }
 
 .exam-item {

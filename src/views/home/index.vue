@@ -1,6 +1,10 @@
 <template>
   <div class="home-page">
     <div class="header">
+      <div class="title-section">
+        <h1 class="main-title">{{ appTitle }}</h1>
+        <p class="sub-title"></p>
+      </div>
       <div class="search-bar">
         <el-select
             class="search-select"
@@ -52,7 +56,7 @@
 
 
 <script setup lang="ts">
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
 import {ElAvatar, ElInput} from 'element-plus';
 import ExamList from "@/views/home/components/examList.vue";
 import {SUBJECTS} from "@/models/exam.ts";
@@ -65,8 +69,10 @@ const router = useRouter();
 const accountStore = useAccountStore();
 const filterKeyword = ref('');
 
+// 从环境变量中读取应用标题
+const appTitle = computed(() => import.meta.env.VITE_GLOB_APP_TITLE);
 
-const subject = ref("(101)政治")
+const subject = ref("请选择科目")
 const dateRange = ref<Date[]>([])
 
 </script>
@@ -97,6 +103,23 @@ const dateRange = ref<Date[]>([])
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25),
     -3px -3px 6px rgba(255, 255, 255, 0.15);
     border-radius: 10px;
+
+    .title-section {
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 20px;
+
+      .main-title {
+        font-size: 28px;
+        margin: 0;
+      }
+
+      .sub-title {
+        font-size: 18px;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
 
     .search-bar {
       width: 100%;
