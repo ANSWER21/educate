@@ -161,6 +161,26 @@ watch(dateRange, () => {
   padding: 10px;
   overflow-y: auto; // 确保 exam-list 可以滚动
   max-height: 100vh; // 设置最大高度，根据需要调整
+
+  // 自定义滚动条样式
+  &::-webkit-scrollbar {
+    width: 10px; // 滚动条宽度
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1); // 滚动条轨道背景颜色，带透明度
+    border-radius: 10px; // 滚动条轨道圆角
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(32, 5, 83, 0.84); // 滚动条滑块背景颜色，带透明度
+    border-radius: 10px; // 滚动条滑块圆角
+    transition: background 0.3s ease; // 平滑过渡效果
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(40, 7, 94, 0.7); // 滚动条滑块悬停时的背景颜色
+  }
 }
 
 .exam-item {
