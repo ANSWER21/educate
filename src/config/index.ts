@@ -25,4 +25,4 @@ export const EXAM_MANAGE_URL: string = "exam_manage";
 export const DEFAULT_PRIMARY: string = "#009688";
 
 // 路由白名单地址
-export const ROUTER_WHITE_LIST: string[] = ["/500"];
+export const ROUTER_WHITE_LIST: string[] = [HOME_URL, "/500"];
