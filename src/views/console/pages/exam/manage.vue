@@ -3,16 +3,29 @@
     <el-header style="display: flex; justify-content: space-between; align-items: center;">
       <p style="color: #1a1a1a">真题列表</p>
       <el-select
+          v-model="college"
+          filterable
+          value-key="code"
+          placeholder="请选择院校"
+          style="width: 300px">
+        <el-option
+            v-for="college in colleges"
+            :value="college"
+            :label="`${college.name}(${college.code})`"
+        />
+      </el-select>
+      <el-select
           v-model="subject"
+          filterable
+          value-key="code"
           placeholder="请选择科目"
-          style="width: 150px;"
+          style="width: 300px"
           @change="handleSearch"
       >
         <el-option
             v-for="subject in subjects"
-            :key="subject.value"
-            :label="`(${subject.value})${subject.label}`"
-            :value="subject.value"
+            :value="subject"
+            :label="`(${subject.code})${subject.name}`"
         />
       </el-select>
     </el-header>
@@ -69,7 +82,7 @@
           </el-table-column>
           <el-table-column prop="subject" label="考试科目">
             <template #default="examScope">
-              {{ getSubjectTip(examScope.row.subject) }}
+              {{ getSubjectTip(subjects, examScope.row.subject) }}
             </template>
           </el-table-column>
           <el-table-column label="目标年月">
@@ -102,21 +115,67 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import {ElMessage} from 'element-plus';
-import {Exam, getSubjectTip, SUBJECTS} from '@/models/exam.ts';
-import {appendFileToExam, deleteExam, getExamList, removeFileFromExam, uploadFile} from '@/api/models/exam.ts';
+import {College, Exam, getSubjectTip, Subject} from '@/models/exam.ts';
+import {
+  appendFileToExam,
+  deleteExam,
+  getAllColleges,
+  getExamList,
+  getSubjectByCollege,
+  removeFileFromExam,
+  uploadFile
+} from '@/api/models/exam.ts';
 import {getFileName} from "@/utils/path.ts";
 import {CODE_SUCCESS} from "@/models/resultJson.ts";
 import {UploadFilled} from "@element-plus/icons-vue";
 
 const exams = ref<Exam[]>([]);
 const filteredExams = ref<Exam[]>([]);
-const subject = ref('');
-const subjects = ref(SUBJECTS);
+const colleges = ref<College[]>([])
+const college = ref<College | undefined>(undefined)
+const subjects = ref<Subject[]>([])
+const subject = ref<Subject | undefined>(undefined)
 const currentPage = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
+
+onMounted(async () => {
+  await getAllColleges().then(res => {
+    if (res.code === CODE_SUCCESS) {
+      colleges.value = res.data
+    } else {
+      ElMessage.error(res.msg)
+    }
+  }).catch((error) => {
+    ElMessage.error(error)
+  });
+})
+
+watch(college, (college) => {
+  console.log('开始获取科目列表', college)
+  const collegeCode = college?.code
+  if (!collegeCode) {
+    subjects.value = []
+    subject.value = undefined
+  } else {
+    getSubjectByCollege(collegeCode)
+        .then((res) => {
+          if (res.code === CODE_SUCCESS) {
+            console.log('获取科目列表成功', res)
+            subjects.value = res.data
+            // 只有在 subjects 不为空时才赋值
+            subject.value = subjects.value.length > 0 ? subjects.value[0] : undefined
+          } else {
+            ElMessage.error(res.msg)
+          }
+        })
+        .catch((error) => {
+          ElMessage.error(error.message || '请求失败')
+        })
+  }
+})
 
 onMounted(() => {
   fetchExams();
@@ -124,7 +183,15 @@ onMounted(() => {
 
 const fetchExams = async () => {
   try {
-    const response = await getExamList(subject.value, null, null, currentPage.value, pageSize.value);
+    const collegeCode = college?.value?.code ?? null
+    const subjectCode = subject?.value?.code ?? null
+    if (collegeCode == null || subjectCode == null) {
+      exams.value = [];
+      total.value = 0;
+      filteredExams.value = exams.value;
+      return;
+    }
+    const response = await getExamList(collegeCode, subjectCode, null, null, currentPage.value, pageSize.value);
     exams.value = response.data.list;
     total.value = response.data.total;
     filteredExams.value = exams.value;

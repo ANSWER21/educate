@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Exam, getSubjectTip} from "@/models/exam.ts";
+import {College, Exam, getSubjectTip, Subject} from "@/models/exam.ts";
 import {computed, nextTick, onMounted, ref, toRefs, watch} from "vue";
 import {format} from "date-fns";
 import {CircleCheck, Loading} from '@element-plus/icons-vue';
@@ -10,13 +10,15 @@ import {getFileName} from "@/utils/path.ts";
 
 // 子组件接收值
 const props = defineProps<{
-  subject: string;
+  college: College | undefined;
+  subjects: Subject[];
+  subject: Subject | undefined;
   filterKeyword: string;
   dateRange: Date[];
 }>();
 
 // 解构 props
-const {subject, filterKeyword, dateRange} = toRefs(props);
+const {college, subjects, subject, filterKeyword, dateRange} = toRefs(props);
 
 const exams = ref<Exam[]>([]);
 const currentPage = ref(1);
@@ -72,8 +74,16 @@ const refreshData = (append = false) => {
 
 
   console.log("加载下一页数据", subject.value, fromDate, toDate)
+
+  const collegeCode = college?.value?.code ?? null
+  const subjectCode = subject?.value?.code ?? null
+  if (collegeCode == null || subjectCode == null) {
+    exams.value = [];
+    return;
+  }
   getExamList(
-      subject.value,
+      collegeCode,
+      subjectCode,
       fromDate,
       toDate,
       currentPage.value,
@@ -131,7 +141,7 @@ watch(dateRange, () => {
       <div class="header">
         <h2 class="item-title">{{ exam.title }}</h2>
         <el-tag type="primary" class="date-tag">{{ format(exam.date, "yyyy-MM-dd") }}</el-tag>
-        <el-tag type="success" class="subject-tag">{{ getSubjectTip(exam.subject) }}</el-tag>
+        <el-tag type="success" class="subject-tag">{{ getSubjectTip(subjects, exam.subject) }}</el-tag>
       </div>
       <el-divider class="divider"/>
       <ul v-if="exam.files && exam.files.length">

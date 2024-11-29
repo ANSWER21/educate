@@ -11,17 +11,34 @@
               @select="handleSelect"
           />
         </el-form-item>
+        <el-form-item label="考试院校:">
+          <el-select
+              v-model="exam.college"
+              filterable
+              value-key="code"
+              placeholder="请选择院校"
+              size="large"
+          >
+            <el-option
+                v-for="college in colleges"
+                :key="college.code"
+                :value="college.code"
+                :label="`${college.name}(${college.code})`"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="考试科目:">
           <el-select
               v-model="exam.subject"
               placeholder="请选择科目"
+              value-key="code"
               size="large"
           >
             <el-option
-                v-for="item in examSubjects"
-                :key="item.value"
-                :label="`(${item.value})${item.label}`"
-                :value="item.value"
+                v-for="subject in subjects"
+                :key="subject.code"
+                :value="subject.code"
+                :label="`(${subject.code})${subject.name}`"
             />
           </el-select>
         </el-form-item>
@@ -64,12 +81,18 @@
 
 
 <script setup lang="ts">
-import {ref} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import {UploadFilled} from '@element-plus/icons-vue';
 import {ElMessage} from 'element-plus';
-import {Exam, SUBJECTS} from '@/models/exam.ts';
-import {Select} from '@/models/select.ts';
-import {createExam, deleteFile, getExamTitles, uploadFile} from '@/api/models/exam.ts';
+import {College, Exam, Subject} from '@/models/exam.ts';
+import {
+  createExam,
+  deleteFile,
+  getAllColleges,
+  getExamTitles,
+  getSubjectByCollege,
+  uploadFile
+} from '@/api/models/exam.ts';
 import {CODE_SUCCESS} from '@/models/resultJson.ts';
 import {useAccountStore} from '@/stores/accountStore.ts';
 import {UNLIMITED_DATE} from "@/utils/date.ts";
@@ -85,15 +108,52 @@ const upload = ref();
 const exam = ref<Exam>({
   id: null,
   title: '',
+  college: '',
   subject: '',
   date: new Date(),
   createId: accountStorage.accountInfo?.id ?? -1,
   files: []
 });
 
+const colleges = ref<College[]>([])
+const subjects = ref<Subject[]>([])
+
 let fileMap: Map<string, string> = new Map();
 
-const examSubjects = ref<Select<string, string>[]>(SUBJECTS);
+onMounted(async () => {
+  await getAllColleges().then(res => {
+    if (res.code === CODE_SUCCESS) {
+      colleges.value = res.data
+    } else {
+      ElMessage.error(res.msg)
+    }
+  }).catch((error) => {
+    ElMessage.error(error)
+  });
+})
+
+// 监听 college 字段的变化
+watch(() => exam.value.college, (collegeCode) => {
+  if (!collegeCode) {
+    subjects.value = []
+    exam.value.subject = ''
+  } else {
+    getSubjectByCollege(collegeCode)
+        .then((res) => {
+          if (res.code === CODE_SUCCESS) {
+            console.log('获取科目列表成功', res)
+            subjects.value = res.data
+            // 只有在 subjects 不为空时才赋值
+            exam.value.subject = subjects.value.length > 0 ? subjects.value[0].code : ''
+          } else {
+            ElMessage.error(res.msg)
+          }
+        })
+        .catch((error) => {
+          ElMessage.error(error.message || '请求失败')
+        })
+  }
+});
 
 let timeout: ReturnType<typeof setTimeout>
 const querySearchAsync = (queryString: string, cb: (arg: any) => void) => {
@@ -157,6 +217,10 @@ const handleRemove = (file: any, _: any) => {
 const onSubmit = () => {
   if (ignoreDate) {
     exam.value.date = UNLIMITED_DATE;
+  }
+  if (!exam.value.college || !exam.value.subject) {
+    ElMessage.error("参数缺失")
+    return
   }
   console.log(JSON.stringify(exam.value));
   createExam(exam.value).then(res => {
