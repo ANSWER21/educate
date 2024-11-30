@@ -2,6 +2,7 @@ import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
 import NProgress from "nprogress";
 import {
     ACCOUNT_URL,
+    COLLEGE_MANAGE_URL,
     CONSOLE_URL,
     EXAM_MANAGE_URL,
     EXAM_UPLOAD_URL,
@@ -66,6 +67,15 @@ export const staticRouter: RouteRecordRaw[] = [
                 component: () => import("@/views/console/pages/exam/manage.vue"),
                 meta: {
                     title: "真题管理",
+                    isKeepAlive: false
+                }
+            },
+            {
+                path: COLLEGE_MANAGE_URL,
+                name: "college_manage",
+                component: () => import("@/views/console/pages/college/manage.vue"),
+                meta: {
+                    title: "院校管理",
                     isKeepAlive: false
                 }
             }

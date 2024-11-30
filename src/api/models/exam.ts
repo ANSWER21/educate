@@ -15,6 +15,13 @@ export const deleteFile = (fileUrl: string) => http.get<boolean>('/api/v1/exam/p
 // 获取全部院校
 export const getAllColleges = () => http.get<College[]>('/api/v1/exam/pub/college/all')
 
+// 分页获取院校信息
+export const getCollegesByPage = (college: string | null, pageNum: number = 1, pageSize: number = 10) => http.get<PageInfo<College>>('/api/v1/exam/pub/college/page', {
+    college: college,
+    pageNum: pageNum,
+    pageSize: pageSize
+})
+
 // 根据院校获取科目
 export const getSubjectByCollege = (collegeCode: string) => http.get<Subject[]>('/api/v1/exam/pub/subject/by/college', {collegeCode: collegeCode})
 

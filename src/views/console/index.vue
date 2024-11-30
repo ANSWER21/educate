@@ -30,7 +30,7 @@
       <el-aside width="200px">
         <el-menu class="layout-menu"
                  :default-openeds="['1']"
-                 default-active="DramaList"
+                 default-active="ExamUpload"
                  active-text-color="#ffd04b"
                  background-color="#545c64"
                  text-color="#fff"
@@ -41,11 +41,19 @@
               <el-icon>
                 <message/>
               </el-icon>
-              真题管理
+              <span>真题管理</span>
             </template>
             <el-menu-item index="ExamUpload" @click="goTo(EXAM_UPLOAD_URL)">上传真题</el-menu-item>
             <el-menu-item index="ExamList" @click="goTo(EXAM_MANAGE_URL)">真题列表</el-menu-item>
           </el-sub-menu>
+          <el-menu-item index="2" @click="goTo(COLLEGE_MANAGE_URL)">
+            <template #title>
+              <el-icon>
+                <message/>
+              </el-icon>
+              <span>院校管理</span>
+            </template>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
@@ -58,7 +66,7 @@
 <script lang="ts" setup>
 import {Message, Setting} from '@element-plus/icons-vue'
 import {useAccountStore} from '@/stores/accountStore.ts'
-import {EXAM_MANAGE_URL, EXAM_UPLOAD_URL} from '@/config'
+import {COLLEGE_MANAGE_URL, EXAM_MANAGE_URL, EXAM_UPLOAD_URL} from '@/config'
 import {useRouter} from "vue-router";
 
 const router = useRouter();
