@@ -2,32 +2,13 @@
   <el-container style="height: 100%; display: flex; flex-direction: column;">
     <el-header style="display: flex; justify-content: space-between; align-items: center;">
       <p style="color: #1a1a1a">真题列表</p>
-      <el-select
-          v-model="college"
-          filterable
-          value-key="code"
-          placeholder="请选择院校"
-          style="width: 300px">
-        <el-option
-            v-for="college in colleges"
-            :value="college"
-            :label="`${college.name}(${college.code})`"
-        />
-      </el-select>
-      <el-select
-          v-model="subject"
-          filterable
-          value-key="code"
-          placeholder="请选择科目"
-          style="width: 300px"
-          @change="handleSearch"
-      >
-        <el-option
-            v-for="subject in subjects"
-            :value="subject"
-            :label="`(${subject.code})${subject.name}`"
-        />
-      </el-select>
+      <college-select v-model="college"
+                      style="width: 300px"/>
+      <subject-select v-model="subject"
+                      :college="college"
+                      :subjects="subjects"
+                      @update:subjects="updateSubjects"
+                      style="width: 300px"/>
     </el-header>
     <el-main class="main-content">
       <div class="table-container">
@@ -118,22 +99,15 @@
 import {onMounted, ref, watch} from 'vue';
 import {ElMessage} from 'element-plus';
 import {College, Exam, getSubjectTip, Subject} from '@/models/exam.ts';
-import {
-  appendFileToExam,
-  deleteExam,
-  getAllColleges,
-  getExamList,
-  getSubjectByCollege,
-  removeFileFromExam,
-  uploadFile
-} from '@/api/models/exam.ts';
+import {appendFileToExam, deleteExam, getExamList, removeFileFromExam, uploadFile} from '@/api/models/exam.ts';
 import {getFileName} from "@/utils/path.ts";
 import {CODE_SUCCESS} from "@/models/resultJson.ts";
 import {UploadFilled} from "@element-plus/icons-vue";
+import SubjectSelect from "@/components/Select/SubjectSelect.vue";
+import CollegeSelect from "@/components/Select/CollegeSelect.vue";
 
 const exams = ref<Exam[]>([]);
 const filteredExams = ref<Exam[]>([]);
-const colleges = ref<College[]>([])
 const college = ref<College | undefined>(undefined)
 const subjects = ref<Subject[]>([])
 const subject = ref<Subject | undefined>(undefined)
@@ -141,41 +115,9 @@ const currentPage = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
 
-onMounted(async () => {
-  await getAllColleges().then(res => {
-    if (res.code === CODE_SUCCESS) {
-      colleges.value = res.data
-    } else {
-      ElMessage.error(res.msg)
-    }
-  }).catch((error) => {
-    ElMessage.error(error)
-  });
-})
-
-watch(college, (college) => {
-  console.log('开始获取科目列表', college)
-  const collegeCode = college?.code
-  if (!collegeCode) {
-    subjects.value = []
-    subject.value = undefined
-  } else {
-    getSubjectByCollege(collegeCode)
-        .then((res) => {
-          if (res.code === CODE_SUCCESS) {
-            console.log('获取科目列表成功', res)
-            subjects.value = res.data
-            // 只有在 subjects 不为空时才赋值
-            subject.value = subjects.value.length > 0 ? subjects.value[0] : undefined
-          } else {
-            ElMessage.error(res.msg)
-          }
-        })
-        .catch((error) => {
-          ElMessage.error(error.message || '请求失败')
-        })
-  }
-})
+const updateSubjects = (val: Subject[]) => {
+  subjects.value = val
+}
 
 onMounted(() => {
   fetchExams();
@@ -200,9 +142,10 @@ const fetchExams = async () => {
   }
 };
 
-const handleSearch = () => {
+watch(subject, () => {
+  currentPage.value = 1;
   fetchExams();
-};
+})
 
 const handleSizeChange = (newPageSize: number) => {
   pageSize.value = newPageSize;

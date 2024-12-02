@@ -6,31 +6,13 @@
         <p class="sub-title"></p>
       </div>
       <div class="search-bar">
-        <el-select
-            v-model="college"
-            filterable
-            value-key="code"
-            placeholder="请选择院校"
-            style="width: 650px">
-          <el-option
-              v-for="college in colleges"
-              :value="college"
-              :label="`${college.name}(${college.code})`"
-          />
-        </el-select>
-        <el-select
-            v-model="subject"
-            filterable
-            value-key="code"
-            placeholder="请选择科目"
-            style="width: 480px"
-        >
-          <el-option
-              v-for="subject in subjects"
-              :value="subject"
-              :label="`(${subject.code})${subject.name}`"
-          />
-        </el-select>
+        <college-select v-model="college"
+                        style="width: 650px"/>
+        <subject-select v-model="subject"
+                        :college="college"
+                        :subjects="subjects"
+                        @update:subjects="updateSubjects"
+                        style="width: 650px"/>
         <el-date-picker
             v-model="dateRange"
             type="monthrange"
@@ -71,16 +53,16 @@
 
 
 <script setup lang="ts">
-import {computed, onMounted, ref, watch} from 'vue';
-import {ElAvatar, ElInput, ElMessage} from 'element-plus';
+import {computed, ref} from 'vue';
+import {ElAvatar, ElInput} from 'element-plus';
 import ExamList from "@/views/home/components/examList.vue";
 import {College, Subject} from "@/models/exam.ts";
 import {ACCOUNT_URL, CONSOLE_URL, SUGGEST_URL} from "@/config";
 import {useRouter} from "vue-router";
 import {useAccountStore} from "@/stores/accountStore.ts";
 import {ROLE_ADMIN} from "@/models/account.ts";
-import {getAllColleges, getSubjectByCollege} from "@/api/models/exam.ts";
-import {CODE_SUCCESS} from "@/models/resultJson.ts";
+import CollegeSelect from "@/components/Select/CollegeSelect.vue";
+import SubjectSelect from "@/components/Select/SubjectSelect.vue";
 
 const router = useRouter();
 const accountStore = useAccountStore();
@@ -89,47 +71,14 @@ const filterKeyword = ref('');
 // 从环境变量中读取应用标题
 const appTitle = computed(() => import.meta.env.VITE_GLOB_APP_TITLE);
 
-const colleges = ref<College[]>([])
 const college = ref<College | undefined>(undefined)
 const subjects = ref<Subject[]>([])
 const subject = ref<Subject | undefined>(undefined)
 const dateRange = ref<Date[]>([])
 
-onMounted(async () => {
-  await getAllColleges().then(res => {
-    if (res.code === CODE_SUCCESS) {
-      colleges.value = res.data
-    } else {
-      ElMessage.error(res.msg)
-    }
-  }).catch((error) => {
-    ElMessage.error(error)
-  });
-})
-
-watch(college, (college) => {
-  console.log('开始获取科目列表', college)
-  const collegeCode = college?.code
-  if (!collegeCode) {
-    subjects.value = []
-    subject.value = undefined
-  } else {
-    getSubjectByCollege(collegeCode)
-        .then((res) => {
-          if (res.code === CODE_SUCCESS) {
-            console.log('获取科目列表成功', res)
-            subjects.value = res.data
-            // 只有在 subjects 不为空时才赋值
-            subject.value = subjects.value.length > 0 ? subjects.value[0] : undefined
-          } else {
-            ElMessage.error(res.msg)
-          }
-        })
-        .catch((error) => {
-          ElMessage.error(error.message || '请求失败')
-        })
-  }
-})
+const updateSubjects = (val: Subject[]) => {
+  subjects.value = val
+}
 
 </script>
 
