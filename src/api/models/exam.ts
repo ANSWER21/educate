@@ -22,6 +22,12 @@ export const getCollegesByPage = (college: string | null, pageNum: number = 1, p
     pageSize: pageSize
 })
 
+// 创建科目
+export const createSubject = (data: Subject) => http.post<boolean>('/api/v1/exam/pri/subject/create', data)
+
+// 删除科目
+export const deleteSubject = (id: number) => http.get<boolean>('/api/v1/exam/pri/delete/subject', {id: id})
+
 // 根据院校获取科目
 export const getSubjectByCollege = (collegeCode: string) => http.get<Subject[]>('/api/v1/exam/pub/subject/by/college', {collegeCode: collegeCode})
 

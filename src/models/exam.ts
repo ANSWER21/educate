@@ -18,6 +18,7 @@ export interface College {
 }
 
 export interface Subject {
+    id: string | null
     code: string,
     name: string,
     collegeCode: string,

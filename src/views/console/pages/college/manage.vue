@@ -50,12 +50,12 @@
       >
         <div>
           <!-- 新建科目的表单 -->
-          <el-form ref="subjectForm" :model="subjectForm">
+          <el-form :model="subjectForm">
             <el-form-item label="科目编号">
-              <el-input v-model="subjectForm.code"></el-input>
+              <el-input v-model="subjectForm.code"/>
             </el-form-item>
             <el-form-item label="科目名称">
-              <el-input v-model="subjectForm.name"></el-input>
+              <el-input v-model="subjectForm.name"/>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="addSubject">添加</el-button>
@@ -67,7 +67,7 @@
             <el-table-column property="name" label="名称"/>
             <el-table-column label="操作">
               <template #default="subjectScope">
-                <el-button size="small" type="danger" @click="handleSubjectDelete(subjectScope.row.code)">删除
+                <el-button size="small" type="danger" @click="handleSubjectDelete(subjectScope.row.id)">删除
                 </el-button>
               </template>
             </el-table-column>
@@ -79,11 +79,11 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref, watch} from 'vue';
+import {onMounted, reactive, ref, watch} from 'vue';
 import {ElMessage} from 'element-plus';
 import {Search} from '@element-plus/icons-vue'
 import {College, Subject} from '@/models/exam.ts';
-import {getCollegesByPage, getSubjectByCollege,} from '@/api/models/exam.ts';
+import {createSubject, deleteSubject, getCollegesByPage, getSubjectByCollege,} from '@/api/models/exam.ts';
 import {CODE_SUCCESS} from "@/models/resultJson.ts";
 
 const collegeFilterKeyword = ref<string | null>()
@@ -159,25 +159,48 @@ const handleCollegeDelete = async (_: number) => {
   }
 };
 
-const subjectForm = ref({
+const subjectForm = reactive({
   code: '',
   name: ''
-});
+})
 
 // 添加科目的方法
 function addSubject() {
+  const subjectCode = subjectForm.code
+  const subjectName = subjectForm.name
+  const collegeCode = college?.value?.code ?? ''
   // 这里可以添加前端验证
-  if (!subjectForm.value.code || !subjectForm.value.name) {
+  if (!subjectCode || !subjectName || !collegeCode) {
     alert("请填写完整的科目信息");
     return;
   }
   // 假设添加科目到subjects数组
+  const subject: Subject = {
+    id: null,
+    code: subjectCode,
+    name: subjectName,
+    collegeCode: collegeCode,
+  }
+  createSubject(subject).then(res => {
+    if (res.code === CODE_SUCCESS) {
+      fetchSubject()
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
 }
 
-const handleSubjectDelete = async (_: number) => {
+const handleSubjectDelete = async (id: number) => {
   try {
-    ElMessage.success('暂不允许删除科目');
-    // await fetchColleges();
+    console.log(id)
+    await deleteSubject(id).then(res => {
+      if (res.code === CODE_SUCCESS) {
+        ElMessage.success('删除成功')
+        fetchSubject()
+      } else {
+        ElMessage.error(res.msg)
+      }
+    })
   } catch (error) {
     ElMessage.error('删除失败');
   }
