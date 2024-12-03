@@ -47,7 +47,7 @@
               v-model="exam.date"
               type="date"
               placeholder="选择日期和时间"
-              v-if="!ignoreDate"
+              :disabled="ignoreDate"
           />
           <el-switch v-model="ignoreDate" active-text="不区分年月" inactive-text="" @change="toggleIgnoreDate"
                      style="margin-left: 20px"/>
@@ -61,6 +61,7 @@
               :multiple="true"
               :http-request="handleUpload"
               :on-remove="handleRemove"
+              :before-upload="handleBeforeUpload"
               style="width: 100%"
           >
             <el-icon class="el-icon--upload">
@@ -81,7 +82,7 @@
 
 
 <script setup lang="ts">
-import {onMounted, ref, watch} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import {UploadFilled} from '@element-plus/icons-vue';
 import {ElMessage} from 'element-plus';
 import {College, Exam, Subject} from '@/models/exam.ts';
@@ -96,6 +97,7 @@ import {
 import {CODE_SUCCESS} from '@/models/resultJson.ts';
 import {useAccountStore} from '@/stores/accountStore.ts';
 import {UNLIMITED_DATE} from "@/utils/date.ts";
+import {formatDate} from "date-fns";
 
 const accountStorage = useAccountStore();
 
@@ -131,6 +133,42 @@ onMounted(async () => {
     ElMessage.error(error)
   });
 })
+
+// 动态生成默认真题名称
+const defaultTitle = computed(() => {
+  const college = colleges.value.find((item) => item.code === exam.value.college);
+  const subject = subjects.value.find((item) => item.code === exam.value.subject);
+  const year = ignoreDate.value ? "不限" : formatDate(exam.value.date, "yyyy");
+  if (college && subject && year) {
+    return `${year}${college.name}${subject.code}${subject.name}`;
+  }
+  return "";
+});
+
+// 监听动态更新标题
+watch([() => exam.value.college, () => exam.value.subject, () => exam.value.date], () => {
+  exam.value.title = defaultTitle.value;
+});
+
+const handleBeforeUpload = (file: File) => {
+  const fileName = file.name;
+  const potentialCode = fileName.substring(0, 3);
+  if (potentialCode.match(/^\d{3}$/)) {
+    const matchedSubject = subjects.value.find(subject => subject.code === potentialCode);
+    if (matchedSubject) {
+      exam.value.subject = matchedSubject.code; // 自动设置科目
+      console.log(`科目自动设置为: ${matchedSubject.name} (${matchedSubject.code})`);
+      ElMessage.success(`科目自动设置为: ${matchedSubject.name} (${matchedSubject.code})`);
+    } else {
+      ElMessage.warning('文件名前三位是数字，但没有找到匹配的科目代码');
+    }
+  } else {
+    ElMessage.info('文件名前三位不是数字，未自动设置科目');
+  }
+  // 不阻止文件上传
+  return true;
+};
+
 
 // 监听 college 字段的变化
 watch(() => exam.value.college, (collegeCode) => {
@@ -178,6 +216,9 @@ const handleSelect = (item: Record<string, any>) => {
 
 const toggleIgnoreDate = (value: boolean) => {
   ignoreDate.value = value;
+  if (ignoreDate) {
+    exam.value.date = UNLIMITED_DATE;
+  }
 };
 
 // 文件上传
@@ -215,9 +256,6 @@ const handleRemove = (file: any, _: any) => {
 
 // 提交表单
 const onSubmit = () => {
-  if (ignoreDate) {
-    exam.value.date = UNLIMITED_DATE;
-  }
   if (!exam.value.college || !exam.value.subject) {
     ElMessage.error("参数缺失")
     return
