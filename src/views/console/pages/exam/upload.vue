@@ -138,7 +138,7 @@ onMounted(async () => {
 const defaultTitle = computed(() => {
   const college = colleges.value.find((item) => item.code === exam.value.college);
   const subject = subjects.value.find((item) => item.code === exam.value.subject);
-  const year = ignoreDate.value ? "不限" : formatDate(exam.value.date, "yyyy");
+  const year = ignoreDate.value ? "" : formatDate(exam.value.date, "yyyy");
   if (college && subject && year) {
     return `${year}${college.name}${subject.code}${subject.name}`;
   }
