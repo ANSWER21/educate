@@ -43,6 +43,7 @@
           </template>
         </el-dropdown>
       </div>
+      <countdown/>
     </div>
     <div class="content">
       <exam-list :college="college" :subjects="subjects" :subject="subject" :dateRange="dateRange"
@@ -63,6 +64,7 @@ import {useAccountStore} from "@/stores/accountStore.ts";
 import {ROLE_ADMIN} from "@/models/account.ts";
 import CollegeSelect from "@/components/Select/CollegeSelect.vue";
 import SubjectSelect from "@/components/Select/SubjectSelect.vue";
+import Countdown from "@/views/home/components/countdown.vue";
 
 const router = useRouter();
 const accountStore = useAccountStore();
