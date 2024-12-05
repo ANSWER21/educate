@@ -63,6 +63,9 @@ const getColleges = () => {
       if (res.code === CODE_SUCCESS) {
         colleges.value.push(...(res.data.list || []));
         hasNextPage = res.data.hasNextPage;
+        if (colleges.value.length > 0 && !internalCollege.value) {
+          internalCollege.value = colleges.value[0]; // 设置默认选中为第一个选项
+        }
       }
     })
   }

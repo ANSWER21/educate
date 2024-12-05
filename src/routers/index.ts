@@ -4,6 +4,7 @@ import {
     ACCOUNT_URL,
     COLLEGE_MANAGE_URL,
     CONSOLE_URL,
+    CORRECT_URL,
     EXAM_MANAGE_URL,
     EXAM_UPLOAD_URL,
     HOME_URL,
@@ -47,10 +48,16 @@ export const staticRouter: RouteRecordRaw[] = [
         meta: {title: "建议反馈"},
     },
     {
+        path: CORRECT_URL,
+        name: "correct",
+        component: () => import("@/views/correct/index.vue"),
+        meta: {title: "英语作文批改"},
+    },
+    {
         path: CONSOLE_URL,
         name: "console",
         component: () => import("@/views/console/index.vue"),
-        meta: {title: "控制台"},
+        meta: {title: "管理后台"},
         children: [
             {
                 path: EXAM_UPLOAD_URL,

@@ -12,6 +12,9 @@ export const ACCOUNT_URL: string = "/account";
 // 已经反馈
 export const SUGGEST_URL: string = "/suggest";
 
+// 批改
+export const CORRECT_URL: string = "/correct";
+
 // 控制台
 export const CONSOLE_URL: string = "/console";
 

@@ -24,9 +24,12 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+$countdown-text-color: #333333; // 更深的灰色，提高可读性
+
 .countdown {
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.6); // 弱化显示
+  color: $countdown-text-color; // 使用更深的灰色
   margin-top: 10px;
+  font-weight: bold; // 增加字体粗细
 }
 </style>

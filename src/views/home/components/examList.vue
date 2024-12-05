@@ -140,8 +140,10 @@ watch(dateRange, () => {
     <div v-for="exam in filteredExams" class="exam-item">
       <div class="header">
         <h2 class="item-title">{{ exam.title }}</h2>
-        <el-tag type="primary" class="date-tag">{{ format(exam.date, "yyyy-MM-dd") }}</el-tag>
-        <el-tag type="success" class="subject-tag">{{ getSubjectTip(subjects, exam.subject) }}</el-tag>
+        <div class="tags">
+          <el-tag type="primary">{{ format(exam.date, "yyyy-MM-dd") }}</el-tag>
+          <el-tag type="success">{{ getSubjectTip(subjects, exam.subject) }}</el-tag>
+        </div>
       </div>
       <el-divider class="divider"/>
       <ul v-if="exam.files && exam.files.length">
@@ -165,49 +167,66 @@ watch(dateRange, () => {
 </template>
 
 <style scoped lang="scss">
+$primary-purple: #6A0DAD; // 主要紫色
+$secondary-purple: #A044FF; // 辅助紫色
+$background-color: #ffffff; // 背景颜色
+$text-color: #000000; // 文字颜色
+$scrollbar-background: rgba(0, 0, 0, 0.1); // 滚动条轨道背景颜色
+$scrollbar-thumb-background: rgba(106, 13, 173, 0.5); // 滚动条滑块背景颜色，使用主要紫色的半透明版本
+
 .exam-list {
-  width: 90%;
+  width: 98%;
   margin: auto;
   padding: 10px;
   overflow-y: auto; // 确保 exam-list 可以滚动
   max-height: 100vh; // 设置最大高度，根据需要调整
+  position: relative; // 添加相对定位以便调整滚动条的位置
 
   // 自定义滚动条样式
   &::-webkit-scrollbar {
-    width: 10px; // 滚动条宽度
+    width: 12px; // 增加滚动条宽度
+    margin-right: 10px; // 增加滚动条与内容的距离
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1); // 滚动条轨道背景颜色，带透明度
+    background: $scrollbar-background; // 滚动条轨道背景颜色
     border-radius: 10px; // 滚动条轨道圆角
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(32, 5, 83, 0.84); // 滚动条滑块背景颜色，带透明度
+    background: $scrollbar-thumb-background; // 滚动条滑块背景颜色
     border-radius: 10px; // 滚动条滑块圆角
     transition: background 0.3s ease; // 平滑过渡效果
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: rgba(40, 7, 94, 0.7); // 滚动条滑块悬停时的背景颜色
+    background: rgba(160, 68, 255, 0.5); // 滚动条滑块悬停时的背景颜色
   }
 }
 
 .exam-item {
-  background: #3c0793;
+  background: $background-color; // 背景颜色
   border-radius: 10px;
   padding: 20px;
+  margin-left: 15px;
+  margin-right: 15px;
   margin-bottom: 20px; // 每项之间的间隔
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3),
   -3px -3px 6px rgba(255, 255, 255, 0.2);
-  color: #fff;
+  color: $text-color; // 文字颜色
   overflow: auto;
   display: flex;
   flex-direction: column;
   align-items: start;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2);
+  }
 }
 
 .header {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -216,36 +235,32 @@ watch(dateRange, () => {
 
 .item-title {
   margin: 0;
-  color: #FAD961; // 标题颜色
+  color: $primary-purple; // 标题颜色改为主要紫色
   font-size: 1.3rem;
 }
 
-.date-tag {
-  margin-left: 10px;
-  margin-right: 5px;
-}
-
-.subject-tag {
-  margin-left: 5px;
+.tags {
+  display: flex;
+  flex-direction: row-reverse; // 从右向左排列
+  gap: 10px; // 增加标签之间的间距
 }
 
 h4 {
   margin: 8px 0;
-  color: #E3FDFD; // 科目颜色
+  color: #E3FDFD; // 科目颜色保持不变
   font-size: 1.0rem;
 }
 
 p {
   margin: 5px 0;
-  color: #D0F8F2; // 日期颜色
+  color: #D0F8F2; // 修改为与 index.vue 相同的日期颜色
   font-size: 0.9rem;
 }
-
 
 /* 调整分割线样式 */
 .divider {
   margin: 5px 0; /* 减少分割线的上下间距 */
-  border-color: #D0F8F2; /* 调整分割线的颜色 */
+  border-color: #cccccc; /* 修改为与 index.vue 相同的较浅灰色边框 */
   border-width: 1px; /* 调整分割线的粗细 */
 }
 
@@ -276,6 +291,7 @@ li {
 
 .bottom-tip .el-icon {
   margin-right: 5px;
-  color: #409eff;
+  color: #409eff; // 修改为与 index.vue 相同的按钮颜色
 }
 </style>
+
