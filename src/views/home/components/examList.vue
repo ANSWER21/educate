@@ -167,12 +167,6 @@ watch(dateRange, () => {
 </template>
 
 <style scoped lang="scss">
-$primary-purple: #6A0DAD; // 主要紫色
-$secondary-purple: #A044FF; // 辅助紫色
-$background-color: #ffffff; // 背景颜色
-$text-color: #000000; // 文字颜色
-$scrollbar-background: rgba(0, 0, 0, 0.1); // 滚动条轨道背景颜色
-$scrollbar-thumb-background: rgba(106, 13, 173, 0.5); // 滚动条滑块背景颜色，使用主要紫色的半透明版本
 
 .exam-list {
   width: 98%;
@@ -235,7 +229,7 @@ $scrollbar-thumb-background: rgba(106, 13, 173, 0.5); // 滚动条滑块背景�
 
 .item-title {
   margin: 0;
-  color: $primary-purple; // 标题颜色改为主要紫色
+  color: $primary-color; // 标题颜色改为主要紫色
   font-size: 1.3rem;
 }
 

@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import {defineEmits, defineProps, ref, toRefs, watch} from "vue";
+import {ref, toRefs, watch} from "vue";
 import {College, Subject} from "@/models/exam.ts";
 import {getSubjectByCollege} from "@/api/models/exam.ts";
 import {CODE_SUCCESS} from "@/models/resultJson.ts";

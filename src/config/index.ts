@@ -31,4 +31,4 @@ export const COLLEGE_MANAGE_URL: string = "college_manage";
 export const DEFAULT_PRIMARY: string = "#009688";
 
 // 路由白名单地址
-export const ROUTER_WHITE_LIST: string[] = [HOME_URL, "/500"];
+export const ROUTER_WHITE_LIST: string[] = [HOME_URL, CORRECT_URL, "/500"];

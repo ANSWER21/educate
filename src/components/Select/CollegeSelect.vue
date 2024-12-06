@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import {defineEmits, defineProps, onMounted, ref, watch} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import type {College} from "@/models/exam.ts";
 import {getCollegesByPage} from "@/api/models/exam.ts";
 import {CODE_SUCCESS} from "@/models/resultJson.ts";

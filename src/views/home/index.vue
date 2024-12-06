@@ -46,7 +46,7 @@
       </div>
       <div class="additional-buttons">
         <countdown/>
-        <el-button @click="router.push(CORRECT_URL)" v-if="false" class="correction-button">英语作文批改</el-button>
+        <el-button @click="router.push(CORRECT_URL)" class="correction-button">英语作文批改</el-button>
       </div>
     </div>
     <div class="content">
