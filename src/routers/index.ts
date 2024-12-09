@@ -9,6 +9,7 @@ import {
     EXAM_UPLOAD_URL,
     HOME_URL,
     LOGIN_URL,
+    PDF_PREVIEW_URL,
     ROUTER_WHITE_LIST,
     SUGGEST_URL
 } from "@/config";
@@ -52,6 +53,12 @@ export const staticRouter: RouteRecordRaw[] = [
         name: "correct",
         component: () => import("@/views/correct/index.vue"),
         meta: {title: "英语作文批改"},
+    },
+    {
+        path: PDF_PREVIEW_URL,
+        name: "pdf_preview",
+        component: () => import("@/views/pdf/index.vue"),
+        meta: {title: "外刊阅读"},
     },
     {
         path: CONSOLE_URL,

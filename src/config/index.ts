@@ -15,6 +15,9 @@ export const SUGGEST_URL: string = "/suggest";
 // 批改
 export const CORRECT_URL: string = "/correct";
 
+// pdf预览
+export const PDF_PREVIEW_URL: string = "/pdfPreview";
+
 // 控制台
 export const CONSOLE_URL: string = "/console";
 
@@ -31,4 +34,4 @@ export const COLLEGE_MANAGE_URL: string = "college_manage";
 export const DEFAULT_PRIMARY: string = "#009688";
 
 // 路由白名单地址
-export const ROUTER_WHITE_LIST: string[] = [HOME_URL, CORRECT_URL, "/500"];
+export const ROUTER_WHITE_LIST: string[] = [HOME_URL, CORRECT_URL, PDF_PREVIEW_URL, "/500"];
