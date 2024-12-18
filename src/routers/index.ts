@@ -8,6 +8,8 @@ import {
     EXAM_MANAGE_URL,
     EXAM_UPLOAD_URL,
     HOME_URL,
+    JOURNAL_UPLOAD_URL,
+    JOURNAL_URL,
     LOGIN_URL,
     PDF_PREVIEW_URL,
     ROUTER_WHITE_LIST,
@@ -58,6 +60,12 @@ export const staticRouter: RouteRecordRaw[] = [
         path: PDF_PREVIEW_URL,
         name: "pdf_preview",
         component: () => import("@/views/pdf/index.vue"),
+        meta: {title: "PDF预览"},
+    },
+    {
+        path: JOURNAL_URL,
+        name: "journal",
+        component: () => import("@/views/journal/index.vue"),
         meta: {title: "外刊阅读"},
     },
     {
@@ -90,6 +98,15 @@ export const staticRouter: RouteRecordRaw[] = [
                 component: () => import("@/views/console/pages/college/manage.vue"),
                 meta: {
                     title: "院校管理",
+                    isKeepAlive: false
+                }
+            },
+            {
+                path: JOURNAL_UPLOAD_URL,
+                name: "journal_upload",
+                component: () => import("@/views/console/pages/journal/upload.vue"),
+                meta: {
+                    title: "外刊上传",
                     isKeepAlive: false
                 }
             }

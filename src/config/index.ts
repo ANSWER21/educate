@@ -18,6 +18,9 @@ export const CORRECT_URL: string = "/correct";
 // pdf预览
 export const PDF_PREVIEW_URL: string = "/pdfPreview";
 
+// 外刊
+export const JOURNAL_URL: string = "/journal";
+
 // 控制台
 export const CONSOLE_URL: string = "/console";
 
@@ -30,8 +33,11 @@ export const EXAM_MANAGE_URL: string = "exam_manage";
 // 院校管理
 export const COLLEGE_MANAGE_URL: string = "college_manage";
 
+// 杂志上传
+export const JOURNAL_UPLOAD_URL: string = "journal_upload";
+
 // 默认主题颜色
 export const DEFAULT_PRIMARY: string = "#009688";
 
 // 路由白名单地址
-export const ROUTER_WHITE_LIST: string[] = [HOME_URL, CORRECT_URL, PDF_PREVIEW_URL, "/500"];
+export const ROUTER_WHITE_LIST: string[] = [HOME_URL, CORRECT_URL, JOURNAL_URL, PDF_PREVIEW_URL, "/500"];

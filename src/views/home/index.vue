@@ -46,11 +46,10 @@
       </div>
       <div class="additional-buttons">
         <countdown/>
-        <el-button
-            @click="router.push({path: PDF_PREVIEW_URL, query: { pdfUrl: 'https://storageeducate.answer.ac.cn/exam/2009%E5%B9%B4%E6%94%BF%E6%B2%BB%E8%A7%A3%E6%9E%90_1732158813730.pdf'}})">
-          外刊阅读
-        </el-button>
-        <el-button @click="router.push(CORRECT_URL)" class="correction-button">英语作文批改</el-button>
+        <div>
+          <el-button @click="router.push(JOURNAL_URL)" class="additional-button">外刊阅读</el-button>
+          <el-button @click="router.push(CORRECT_URL)" class="additional-button">英语作文批改</el-button>
+        </div>
       </div>
     </div>
     <div class="content">
@@ -65,7 +64,7 @@ import {computed, ref} from 'vue';
 import {ElAvatar, ElInput} from 'element-plus';
 import ExamList from "@/views/home/components/examList.vue";
 import {College, Subject} from "@/models/exam.ts";
-import {ACCOUNT_URL, CONSOLE_URL, CORRECT_URL, PDF_PREVIEW_URL, SUGGEST_URL} from "@/config";
+import {ACCOUNT_URL, CONSOLE_URL, CORRECT_URL, JOURNAL_URL, SUGGEST_URL} from "@/config";
 import {useRouter} from "vue-router";
 import {useAccountStore} from "@/stores/accountStore.ts";
 import {ROLE_ADMIN} from "@/models/account.ts";
@@ -165,7 +164,7 @@ const updateSubjects = (val: Subject[]) => {
       margin-top: 10px; // 增加上部外边距
       gap: 15px; // 增加按钮之间的间距
 
-      .correction-button {
+      .additional-button {
         margin-top: 0; // 移除顶部外边距
       }
     }

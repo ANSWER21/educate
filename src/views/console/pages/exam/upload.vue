@@ -86,18 +86,12 @@ import {computed, onMounted, ref, watch} from 'vue';
 import {UploadFilled} from '@element-plus/icons-vue';
 import {ElMessage} from 'element-plus';
 import {College, Exam, Subject} from '@/models/exam.ts';
-import {
-  createExam,
-  deleteFile,
-  getAllColleges,
-  getExamTitles,
-  getSubjectByCollege,
-  uploadFile
-} from '@/api/models/exam.ts';
+import {createExam, getAllColleges, getExamTitles, getSubjectByCollege, uploadFile} from '@/api/models/exam.ts';
 import {CODE_SUCCESS} from '@/models/resultJson.ts';
 import {useAccountStore} from '@/stores/accountStore.ts';
 import {UNLIMITED_DATE} from "@/utils/date.ts";
 import {formatDate} from "date-fns";
+import {deleteFile} from "@/api/models/common.ts";
 
 const accountStorage = useAccountStore();
 

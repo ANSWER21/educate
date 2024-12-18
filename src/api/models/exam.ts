@@ -9,8 +9,6 @@ export const uploadFile = (data: FormData) => http.post<string>('/api/v1/exam/pu
     }
 })
 
-// 删除文件
-export const deleteFile = (fileUrl: string) => http.get<boolean>('/api/v1/exam/pri/delete/file', {fileUrl: fileUrl})
 
 // 获取全部院校
 export const getAllColleges = () => http.get<College[]>('/api/v1/exam/pub/college/all')
