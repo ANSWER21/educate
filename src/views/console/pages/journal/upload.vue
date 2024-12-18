@@ -76,7 +76,7 @@ const upload = ref();
 const journal = ref<Journal>({
   id: null,
   title: '',
-  date: null,
+  date: new Date(),
   fileUrl: '',
   createId: accountStorage.accountInfo?.id ?? -1,
   translatedFileUrl: null
