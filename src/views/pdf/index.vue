@@ -23,7 +23,7 @@ import {computed, onMounted, onUnmounted, ref} from "vue";
 import * as pdfjsLib from "pdfjs-dist";
 import {getDocument} from "pdfjs-dist";
 import {useRoute} from "vue-router";
-import {TextLayerBuilder} from "pdfjs-dist/web/pdf_viewer";
+// import {TextLayerBuilder} from "pdfjs-dist/web/pdf_viewer";
 
 const route = useRoute();
 const pdfUrl = route.query.pdfUrl as string;
@@ -65,7 +65,7 @@ let loadingTask: any;
 const renderPage = (num: number) => {
   pdfDoc.getPage(num).then((page: any) => {
     const canvas: HTMLCanvasElement | null = document.getElementById(`pdf-canvas-${num}`) as HTMLCanvasElement;
-    const textLayer: HTMLElement | null = document.getElementById(`pdf-text-${num}`);
+    // const textLayer: HTMLElement | null = document.getElementById(`pdf-text-${num}`);
     if (canvas && pdfContainerRef.value) {
       const context = canvas.getContext("2d");
       if (context) {
@@ -82,21 +82,21 @@ const renderPage = (num: number) => {
         };
         page.render(renderContext);
         // 创建 TextLayerBuilder 实例
-        const textLayerBuilder = new TextLayerBuilder({
-          pdfPage: page,
-        });
-        if (textLayer) {
-          textLayer.innerHTML = '';
-          textLayer.style.setProperty('--scale-factor', viewport.scale.toString());
-          textLayer.style.width = `${viewport.width}px`;
-          textLayer.style.height = `${viewport.height}px`;
-          textLayer.style.position = 'absolute';
-          textLayer.style.zIndex = '1';
-          textLayer.style.left = '50%'; // 设置左边距为 50%
-          textLayer.style.transform = 'translateX(-50%)'; // 向左移动一半的宽度
-          textLayer.appendChild(textLayerBuilder.div);
-        }
-        textLayerBuilder.render(viewport);
+        // const textLayerBuilder = new TextLayerBuilder({
+        //   pdfPage: page,
+        // });
+        // if (textLayer) {
+        //   textLayer.innerHTML = '';
+        //   textLayer.style.setProperty('--scale-factor', viewport.scale.toString());
+        //   textLayer.style.width = `${viewport.width}px`;
+        //   textLayer.style.height = `${viewport.height}px`;
+        //   textLayer.style.position = 'absolute';
+        //   textLayer.style.zIndex = '1';
+        //   textLayer.style.left = '50%'; // 设置左边距为 50%
+        //   textLayer.style.transform = 'translateX(-50%)'; // 向左移动一半的宽度
+        //   textLayer.appendChild(textLayerBuilder.div);
+        // }
+        // textLayerBuilder.render(viewport);
         if (num < loadedNum.value + preloadNum.value && !loadFinished.value) {
           setTimeout(() => renderPage(num + 1), 0); // 使用 setTimeout 避免递归过深
         } else {
