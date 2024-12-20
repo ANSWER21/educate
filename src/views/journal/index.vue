@@ -114,6 +114,8 @@ watch(selectedTitle, () => {
       journalYears.value = res.data
       if (res.data.length > 0) {
         selectedYear.value = res.data[0]
+      } else {
+        journalMoths.value = []
       }
     } else {
       ElMessage.error(res.msg)

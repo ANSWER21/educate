@@ -7,7 +7,6 @@
           <el-select
               v-model="journal.title"
               filterable
-              value-key="code"
               placeholder="请选择标题"
               size="large"
           >
@@ -113,6 +112,8 @@ onMounted(async () => {
 const handleUpload = (params: any) => {
   const formData = new FormData();
   formData.append('file', params.file);
+  formData.append('title', journal.value.title);
+  formData.append('date', journal.value.date.toISOString());
   const extension = params.file.name.substring(params.file.name.lastIndexOf('.') + 1);
   if (extension !== 'pdf') {
     return ElMessage.error('请上传pdf文件');
@@ -141,6 +142,8 @@ const handleRemove = (file: any, _: any) => {
 
 // 提交表单
 const onSubmit = () => {
+  console.log(journal.value.title)
+  console.log(journal.value.fileUrl)
   if (!journal.value.title || !journal.value.fileUrl) {
     ElMessage.error("参数缺失")
     return
