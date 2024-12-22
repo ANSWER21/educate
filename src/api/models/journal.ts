@@ -23,7 +23,7 @@ export const getJournalMonths = (title: string, year: number) => http.get<number
 export const getJournalDates = (title: string) => http.get<string[]>('/api/v1/journal/pub/get/dates', {title: title})
 
 // 获取杂志
-export const getJournals = (title: string, fromDate: Date, toDate: Date, pageNum: number = 1, pageSize: number = 12) => http.get<PageInfo<Journal>>('/api/v1/journal/pub/get/journals', {
+export const getJournals = (title: string, fromDate: Date, toDate: Date, pageNum: number = 1, pageSize: number = 31) => http.get<PageInfo<Journal>>('/api/v1/journal/pub/get/journals', {
     title: title,
     fromDate: fromDate.toISOString(),
     toDate: toDate.toISOString(),
