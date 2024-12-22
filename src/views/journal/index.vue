@@ -125,7 +125,7 @@ watch(selectedTitle, () => {
   })
 })
 
-watch(selectedYear, () => {
+watch([selectedTitle, selectedYear], () => {
   if (!selectedYear.value) return
   getJournalMonths(selectedTitle.value, selectedYear.value!!).then(res => {
     if (res.code === CODE_SUCCESS) {
