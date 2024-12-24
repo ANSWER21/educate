@@ -9,8 +9,9 @@ import {onMounted, ref} from "vue";
 const remainingDays = ref(0);
 
 const calculateRemainingDays = () => {
-  const examDate = new Date('2024-12-21T00:00:00'); // 假设考研日期是2024年12月21日
   const now = new Date();
+  const year = now.getFullYear();
+  const examDate = new Date(`${year + 1}-12-21T00:00:00`);
   const distance = examDate.getTime() - now.getTime();
 
   if (distance > 0) {
