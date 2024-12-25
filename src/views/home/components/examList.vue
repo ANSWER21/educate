@@ -6,7 +6,7 @@ import {CircleCheck, Loading} from '@element-plus/icons-vue';
 import {getExamList} from "@/api/models/exam.ts";
 import {CODE_SUCCESS, PageInfo} from "@/models/resultJson.ts";
 import {ElMessage} from "element-plus";
-import {getFileName} from "@/utils/path.ts";
+import {getFileName, getFileWithoutTimestamp} from "@/utils/path.ts";
 
 // 子组件接收值
 const props = defineProps<{
@@ -148,7 +148,7 @@ watch(dateRange, () => {
       <el-divider class="divider"/>
       <ul v-if="exam.files && exam.files.length">
         <li v-for="url in exam.files" :key="url" class="file-item">
-          <a :href="url" target="_blank">
+          <a :href="url" :download="getFileWithoutTimestamp(url)" target="_blank">
             {{ getFileName(url) }}
           </a>
         </li>
