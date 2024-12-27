@@ -36,6 +36,9 @@ export const COLLEGE_MANAGE_URL: string = "college_manage";
 // 杂志上传
 export const JOURNAL_UPLOAD_URL: string = "journal_upload";
 
+// 博客编辑
+export const BLOG_EDIT_URL: string = "blog_edit";
+
 // 默认主题颜色
 export const DEFAULT_PRIMARY: string = "#009688";
 

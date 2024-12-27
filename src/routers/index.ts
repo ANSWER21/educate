@@ -2,6 +2,7 @@ import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
 import NProgress from "nprogress";
 import {
     ACCOUNT_URL,
+    BLOG_EDIT_URL,
     COLLEGE_MANAGE_URL,
     CONSOLE_URL,
     CORRECT_URL,
@@ -107,6 +108,15 @@ export const staticRouter: RouteRecordRaw[] = [
                 component: () => import("@/views/console/pages/journal/upload.vue"),
                 meta: {
                     title: "外刊上传",
+                    isKeepAlive: false
+                }
+            },
+            {
+                path: BLOG_EDIT_URL,
+                name: "blog_edit",
+                component: () => import("@/views/console/pages/blog/Edit.vue"),
+                meta: {
+                    title: "博客编辑",
                     isKeepAlive: false
                 }
             }

@@ -55,7 +55,7 @@
             </template>
             <el-menu-item index="JournalUpload" @click="goTo(JOURNAL_UPLOAD_URL)">上传外刊</el-menu-item>
           </el-sub-menu>
-          <el-menu-item index="2" @click="goTo(COLLEGE_MANAGE_URL)">
+          <el-menu-item index="3" @click="goTo(COLLEGE_MANAGE_URL)">
             <template #title>
               <el-icon>
                 <message/>
@@ -63,6 +63,15 @@
               <span>院校管理</span>
             </template>
           </el-menu-item>
+          <el-sub-menu index="4">
+            <template #title>
+              <el-icon>
+                <message/>
+              </el-icon>
+              <span>博客管理</span>
+            </template>
+            <el-menu-item index="BlogEdit" @click="goTo(BLOG_EDIT_URL)">博客编辑</el-menu-item>
+          </el-sub-menu>
         </el-menu>
       </el-aside>
       <el-main>
@@ -75,7 +84,7 @@
 <script lang="ts" setup>
 import {Message, Setting} from '@element-plus/icons-vue'
 import {useAccountStore} from '@/stores/accountStore.ts'
-import {COLLEGE_MANAGE_URL, EXAM_MANAGE_URL, EXAM_UPLOAD_URL, JOURNAL_UPLOAD_URL} from '@/config'
+import {BLOG_EDIT_URL, COLLEGE_MANAGE_URL, EXAM_MANAGE_URL, EXAM_UPLOAD_URL, JOURNAL_UPLOAD_URL} from '@/config'
 import {useRouter} from "vue-router";
 
 const router = useRouter();
