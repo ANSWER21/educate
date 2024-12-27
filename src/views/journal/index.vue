@@ -55,7 +55,7 @@
       <el-row :gutter="20">
         <el-col v-for="journal in journals" :key="journal.id" :xs="24" :sm="12" :md="8" :lg="6" :xl="6">
           <div class="custom-card">
-            <img :src="`${journal.fileUrl}?ci-process=doc-preview&page=1`" alt="journal cover">
+            <img :src="journal.thumbnailUrl??''" alt="journal cover">
             <div class="card-body">
               <div class="bottom">
                 <el-tag type="primary">{{ format(journal.date, "yyyy-MM-dd") }}</el-tag>

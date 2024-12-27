@@ -76,6 +76,7 @@ const journal = ref<Journal>({
   id: null,
   title: '',
   date: new Date(),
+  thumbnailUrl: null,
   fileUrl: '',
   createId: accountStorage.accountInfo?.id ?? -1,
   translatedFileUrl: null
