@@ -4,7 +4,7 @@ import {Account, AccountState} from "@/models/account.ts";
 export const useAccountStore = defineStore('account', {
     state: ():AccountState => ({
         token: null,
-        accountInfo:null
+        accountInfo: null
     }),
     getters: {
 
