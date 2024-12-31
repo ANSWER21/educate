@@ -2,6 +2,12 @@
   <el-container v-if="editor" class="container">
     <el-header class="editor-header">
       <div class="button-group">
+        <el-button @click="editor.chain().focus().undo().run()" :disabled="!editor.can().undo()">
+          <img class="fas fa-undo" src="@/assets/images/undo.svg" alt="撤销"/>
+        </el-button>
+        <el-button @click="editor.chain().focus().redo().run()" :disabled="!editor.can().redo()">
+          <img class="fas fa-redo" src="@/assets/images/redo.svg" alt="恢复"/>
+        </el-button>
         <el-dropdown @command="handleHeadingChange">
           <el-button type="primary">{{ getActiveHeadingLevel }}</el-button>
           <template #dropdown>
@@ -61,9 +67,31 @@
                 :class="{ 'is-active': editor.isActive({ textAlign: 'justify' }) }">
           <img class="fas fa-align-justify" src="@/assets/images/text-align-justify.svg" alt="两端对齐"/>
         </el-button>
+        <el-button @click="addImage">
+          <img class="fas fa-image" src="@/assets/images/image.svg" alt="插图"/>
+        </el-button>
       </div>
     </el-header>
     <el-main class="editor-main">
+      <bubble-menu
+          :editor="editor"
+          :tippy-options="{ duration: 100 }"
+          v-if="editor"
+      >
+        <div class="bubble-menu">
+          <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
+            Bold
+          </button>
+          <button @click="editor.chain().focus().toggleItalic().run()"
+                  :class="{ 'is-active': editor.isActive('italic') }">
+            Italic
+          </button>
+          <button @click="editor.chain().focus().toggleStrike().run()"
+                  :class="{ 'is-active': editor.isActive('strike') }">
+            Strike
+          </button>
+        </div>
+      </bubble-menu>
       <editor-content :editor="editor" class="editor-content"/>
     </el-main>
   </el-container>
@@ -71,9 +99,14 @@
 
 <script setup lang="ts">
 import Highlight from '@tiptap/extension-highlight'
-import TextAlign from '@tiptap/extension-text-align'
+import Typography from '@tiptap/extension-typography'
 import StarterKit from '@tiptap/starter-kit'
-import {EditorContent, useEditor} from '@tiptap/vue-3'
+import TextAlign from '@tiptap/extension-text-align'
+import Image from '@tiptap/extension-image'
+import TaskItem from '@tiptap/extension-task-item'
+import TaskList from '@tiptap/extension-task-list'
+
+import {BubbleMenu, EditorContent, useEditor} from '@tiptap/vue-3'
 import {computed, ref} from "vue";
 
 const content = ref<string>('')
@@ -82,18 +115,25 @@ const editor = useEditor({
   content: content,
   extensions: [
     StarterKit,
+    Highlight,
+    Typography,
     TextAlign.configure({
       types: ['heading', 'paragraph'],
     }),
-    Highlight,
-  ],
-  editorProps: {
-    attributes: {
-      class: 'tiptap-editor'
-    }
-  }
+    Image,
+    TaskList,
+    TaskItem.configure({
+      nested: true,
+    }),
+  ]
 })
 
+function addImage() {
+  const url = window.prompt('URL')
+  if (url) {
+    editor.value?.chain().focus().setImage({src: url}).run()
+  }
+}
 
 const getActiveHeadingLevel = computed(() => {
   if (editor.value?.isActive('heading', {level: 1})) return '标题1';
@@ -176,13 +216,69 @@ const handleHeadingChange = (value: string) => {
       flex: 1;
       padding: 0;
 
-      .tiptap-editor {
-        background: white;
-        flex: 1;
-        text-align: left;
-        color: black; /* 设置文字默认颜色为黑色 */
-        outline: none;
+    }
+  }
+}
+
+/* 自定义编辑内容样式 */
+.tiptap {
+  background: white;
+  flex: 1;
+  text-align: left;
+  color: black; /* 设置文字默认颜色为黑色 */
+  outline: none;
+
+  /* Image styles */
+  img {
+    display: block;
+    height: auto;
+    margin: 1.5rem 0;
+    max-width: 100%;
+
+    :first-child {
+      margin-top: 0;
+    }
+
+    &.ProseMirror-selectednode {
+      outline: 3px solid var(--purple);
+    }
+  }
+
+  /* List styles */
+  ul,
+  ol {
+    padding: 0 1rem;
+    margin: 1.25rem 1rem 1.25rem 0.4rem;
+
+    li p {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+  }
+
+  /* Task list specific styles */
+  ul[data-type="taskList"] {
+    list-style: none;
+    margin-left: 0;
+    padding: 0;
+
+    li {
+      align-items: center;
+      display: flex;
+
+      > label {
+        flex: 0 0 auto;
+        margin-right: 0.5rem;
+        user-select: none;
       }
+
+      > div {
+        flex: 1 1 auto;
+      }
+    }
+
+    input[type="checkbox"] {
+      cursor: pointer;
     }
   }
 }
