@@ -98,6 +98,7 @@
 </template>
 
 <script setup lang="ts">
+import {computed} from "vue";
 import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
 import StarterKit from '@tiptap/starter-kit'
@@ -105,14 +106,19 @@ import TextAlign from '@tiptap/extension-text-align'
 import Image from '@tiptap/extension-image'
 import TaskItem from '@tiptap/extension-task-item'
 import TaskList from '@tiptap/extension-task-list'
-
+import Collaboration from '@tiptap/extension-collaboration'
+import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+import {WebrtcProvider} from 'y-webrtc'
+import * as Y from 'yjs'
 import {BubbleMenu, EditorContent, useEditor} from '@tiptap/vue-3'
-import {computed, ref} from "vue";
+import {useAccountStore} from "@/stores/accountStore.ts";
+import {Account} from "@/models/account.ts";
 
-const content = ref<string>('')
-
+const accountStore = useAccountStore();
+// 创建响应式变量
+const ydoc = new Y.Doc();
+const provider = new WebrtcProvider('tiptap-collaboration-cursor-extension', ydoc);
 const editor = useEditor({
-  content: content,
   extensions: [
     StarterKit,
     Highlight,
@@ -125,8 +131,32 @@ const editor = useEditor({
     TaskItem.configure({
       nested: true,
     }),
+    Collaboration.configure({
+      document: ydoc,
+    }),
+    CollaborationCursor.configure({
+      provider: provider,
+      user: {
+        name: getUserName(),
+        color: getRandomColor(),
+      },
+    })
   ]
-})
+});
+
+function getUserName(): string {
+  const accountInfo: Account | null = accountStore.accountInfo
+  return accountInfo?.nickName || accountInfo?.userName || accountInfo?.email || 'Anonymous';
+}
+
+function getRandomColor(): string {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
 function addImage() {
   const url = window.prompt('URL')
@@ -227,6 +257,34 @@ const handleHeadingChange = (value: string) => {
   text-align: left;
   color: black; /* 设置文字默认颜色为黑色 */
   outline: none;
+
+
+  /* Give a remote user a caret */
+  .collaboration-cursor__caret {
+    border-left: 1px solid #0d0d0d;
+    border-right: 1px solid #0d0d0d;
+    margin-left: -1px;
+    margin-right: -1px;
+    pointer-events: none;
+    position: relative;
+    word-break: normal;
+  }
+
+  /* Render the username above the caret */
+  .collaboration-cursor__label {
+    border-radius: 3px 3px 3px 0;
+    color: #0d0d0d;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    left: -1px;
+    line-height: normal;
+    padding: 0.1rem 0.3rem;
+    position: absolute;
+    top: -1.4em;
+    user-select: none;
+    white-space: nowrap;
+  }
 
   /* Image styles */
   img {
