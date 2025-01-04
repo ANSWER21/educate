@@ -1,9 +1,9 @@
 import {mergeAttributes, Node} from '@tiptap/core'
 import {VueNodeViewRenderer} from '@tiptap/vue-3'
 
-import Component from './Component.vue'
+import Component from '@/components/Edit/extensions/DragItem.vue'
 
-export default Node.create({
+const DraggableItem = Node.create({
     name: 'draggableItem',
 
     group: 'block',
@@ -28,3 +28,5 @@ export default Node.create({
         return VueNodeViewRenderer(Component)
     },
 })
+
+export default DraggableItem;
