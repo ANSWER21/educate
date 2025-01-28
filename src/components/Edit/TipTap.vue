@@ -71,9 +71,6 @@
         <!--                :class="{ 'is-active': editor.isActive('codeBlock') }">-->
         <!--          <img class="fas fa-code" src="@/assets/images/code-inline.svg" alt="代码块"/>-->
         <!--        </el-button>-->
-        <el-button>
-
-        </el-button>
         <el-button @click="addImage">
           <img class="fas fa-image" src="@/assets/images/image.svg" alt="插图"/>
         </el-button>
@@ -83,7 +80,7 @@
       <bubble-menu
           :editor="editor"
           :tippy-options="{ duration: 100 }"
-          v-if="editor"
+          v-if="isFocusing"
           class="bubble-menu"
       >
         <el-button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
@@ -107,7 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
+import {computed, ref, watch} from "vue";
 import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
 import StarterKit from '@tiptap/starter-kit'
@@ -123,12 +120,34 @@ import * as Y from 'yjs'
 import {BubbleMenu, EditorContent, useEditor} from '@tiptap/vue-3'
 import {useAccountStore} from "@/stores/accountStore.ts";
 import {Account} from "@/models/account.ts";
+import {Blog} from "@/models/blog.ts";
 
+const isFocusing = ref<boolean>(false)
 const accountStore = useAccountStore();
 // 创建响应式变量
 const ydoc = new Y.Doc();
 const provider = new WebrtcProvider('tiptap-collaboration-cursor-extension', ydoc);
+const socket = ref<WebSocket | null>(null);
+
+// 明确定义 props 和它们的类型
+const props = defineProps({
+  blogValue: Object as () => Blog | undefined
+});
+
 const editor = useEditor({
+  onUpdate: ({editor}) => {
+    const json = editor.getJSON()
+    socket.value?.send(JSON.stringify(json));
+  },
+  onSelectionUpdate() {
+
+  },
+  onFocus: () => {
+    isFocusing.value = true
+  },
+  onBlur: () => {
+    isFocusing.value = false
+  },
   extensions: [
     StarterKit,
     Highlight,
@@ -155,9 +174,53 @@ const editor = useEditor({
   ]
 });
 
+watch(() => props.blogValue, (newValue) => {
+  if (newValue && newValue.id) {
+    disconnectWebSocket()
+    connectWebSocket(newValue.id!!)
+  }
+})
+
+// WebSocket 连接函数
+const connectWebSocket = (blogId: number) => {
+  const url = `ws://educateserver.answer.ac.cn/blog?blogId=${blogId}`;
+  socket.value = new WebSocket(url);
+
+  socket.value.onopen = () => {
+    console.log('WebSocket connection established');
+  };
+
+  socket.value.onmessage = (event) => {
+    console.log('Message received:', event.data);
+    try {
+      const data = JSON.parse(event.data);
+      editor.value?.commands.setContent(data);
+    } catch (error) {
+      console.error('Error parsing JSON:', error);
+    }
+  };
+
+  socket.value.onclose = () => {
+    console.log('WebSocket connection closed');
+  };
+
+  socket.value.onerror = (error) => {
+    console.error('WebSocket error:', error);
+  };
+};
+
+// WebSocket 断开连接函数
+const disconnectWebSocket = () => {
+  if (socket.value) {
+    socket.value.close();
+    socket.value = null;
+    console.log('WebSocket disconnected');
+  }
+};
+
 function getUserName(): string {
   const accountInfo: Account | null = accountStore.accountInfo
-  return accountInfo?.nickName || accountInfo?.userName || accountInfo?.email || 'Anonymous';
+  return accountInfo?.nickName || accountInfo?.email || accountInfo?.userName || 'Anonymous';
 }
 
 function getRandomColor(): string {
@@ -206,7 +269,6 @@ const handleHeadingChange = (value: string) => {
   background-color: white;
 
   .editor-header {
-    position: fixed;
     top: 0;
     width: 100%;
     height: auto;
