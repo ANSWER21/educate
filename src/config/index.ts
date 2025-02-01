@@ -21,6 +21,9 @@ export const PDF_PREVIEW_URL: string = "/pdfPreview";
 // 外刊
 export const JOURNAL_URL: string = "/journal";
 
+// 真题
+export const EXAM_URL: string = "/exam";
+
 // 控制台
 export const CONSOLE_URL: string = "/console";
 
@@ -43,4 +46,4 @@ export const BLOG_EDIT_URL: string = "blog_edit";
 export const DEFAULT_PRIMARY: string = "#009688";
 
 // 路由白名单地址
-export const ROUTER_WHITE_LIST: string[] = [HOME_URL, CORRECT_URL, JOURNAL_URL, PDF_PREVIEW_URL, "/500"];
+export const ROUTER_WHITE_LIST: string[] = [HOME_URL, CORRECT_URL, JOURNAL_URL, PDF_PREVIEW_URL, EXAM_URL, "/500"];

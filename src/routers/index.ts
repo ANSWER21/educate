@@ -8,6 +8,7 @@ import {
     CORRECT_URL,
     EXAM_MANAGE_URL,
     EXAM_UPLOAD_URL,
+    EXAM_URL,
     HOME_URL,
     JOURNAL_UPLOAD_URL,
     JOURNAL_URL,
@@ -68,6 +69,12 @@ export const staticRouter: RouteRecordRaw[] = [
         name: "journal",
         component: () => import("@/views/journal/index.vue"),
         meta: {title: "外刊阅读"},
+    },
+    {
+        path: EXAM_URL,
+        name: "exam",
+        component: () => import("@/views/exam/index.vue"),
+        meta: {title: "考研真题"},
     },
     {
         path: CONSOLE_URL,

@@ -7,27 +7,7 @@
         <p class="sub-title"></p>
       </div>
       <div class="search-bar">
-        <college-select v-model="college" style="width: 650px"/>
-        <subject-select v-model="subject"
-                        :college="college"
-                        :subjects="subjects"
-                        @update:subjects="updateSubjects"
-                        style="width: 650px"/>
-        <el-date-picker
-            v-model="dateRange"
-            type="monthrange"
-            range-separator="到"
-            start-placeholder="开始月份"
-            end-placeholder="结束月份"
-            class="date-picker"
-            v-if="showDatePicker"
-            style="width: 600px"
-        />
-        <el-input
-            v-model="filterKeyword"
-            placeholder="请输入过滤关键词"
-            class="search-box"
-        />
+        <countdown/>
         <el-dropdown>
           <el-avatar
               :src="accountStore.accountInfo?.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"
@@ -45,49 +25,33 @@
         </el-dropdown>
       </div>
       <div class="additional-buttons">
-        <countdown/>
         <div>
+          <el-button @click="router.push(EXAM_URL)" class="additional-button">考研真题</el-button>
           <el-button @click="router.push(JOURNAL_URL)" class="additional-button">外刊阅读</el-button>
           <el-button @click="router.push(CORRECT_URL)" class="additional-button">英语作文批改</el-button>
         </div>
       </div>
     </div>
     <div class="content">
-      <exam-list :college="college" :subjects="subjects" :subject="subject" :dateRange="dateRange"
-                 :filterKeyword="filterKeyword"/>
+
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue';
-import {ElAvatar, ElInput} from 'element-plus';
-import ExamList from "@/views/home/components/examList.vue";
-import {College, Subject} from "@/models/exam.ts";
-import {ACCOUNT_URL, CONSOLE_URL, CORRECT_URL, JOURNAL_URL, SUGGEST_URL} from "@/config";
+import {computed} from 'vue';
+import {ElAvatar} from 'element-plus';
+import {ACCOUNT_URL, CONSOLE_URL, CORRECT_URL, EXAM_URL, JOURNAL_URL, SUGGEST_URL} from "@/config";
 import {useRouter} from "vue-router";
 import {useAccountStore} from "@/stores/accountStore.ts";
 import {ROLE_ADMIN} from "@/models/account.ts";
-import CollegeSelect from "@/components/Select/CollegeSelect.vue";
-import SubjectSelect from "@/components/Select/SubjectSelect.vue";
 import Countdown from "@/views/home/components/countdown.vue";
 
 const router = useRouter();
 const accountStore = useAccountStore();
-const filterKeyword = ref('');
-const showDatePicker = ref(false)
 
 // 从环境变量中读取应用标题
 const appTitle = computed(() => import.meta.env.VITE_GLOB_APP_TITLE);
-
-const college = ref<College | undefined>(undefined)
-const subjects = ref<Subject[]>([])
-const subject = ref<Subject | undefined>(undefined)
-const dateRange = ref<Date[]>([])
-
-const updateSubjects = (val: Subject[]) => {
-  subjects.value = val
-}
 
 </script>
 
@@ -183,21 +147,6 @@ const updateSubjects = (val: Subject[]) => {
     align-items: center;
     padding: 20px;
     overflow: auto;
-
-    .item-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-
-      .item-image {
-        height: 160px;
-      }
-
-      .item-title {
-        font-size: 20px;
-        color: #000000; // 黑色
-      }
-    }
   }
 }
 </style>
