@@ -5,6 +5,7 @@
       remote
       value-key="code"
       placeholder="请选择院校"
+      disabled
       v-load_more="loadMore"
       :filter-method="changeKeyword"
       :remote-method="getColleges">
